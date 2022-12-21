@@ -14,7 +14,7 @@ namespace EF_Demo_many2many2
                 var movie3 = new Movie { Name = "Edge of Tomorrow" };
                 var movie4 = new Movie { Name = "A Quiet Place" };
                 myDb.AddRange(
-                    new Actor
+                    new Actor  
                     {
                         Name = "Tom Cruise",
                         Movies = new List<Movie> { movie1, movie3 }
