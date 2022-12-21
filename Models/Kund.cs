@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EF_Demo_many2many2.Models
 {
-    internal class Kund
+    public class Kund
     {
         public int Id { get; set; }
         public string Namn { get; set; }

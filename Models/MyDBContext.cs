@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EF_Demo_many2many2.Models
 {
-    internal class MyDBContext : DbContext
+    public class MyDBContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
