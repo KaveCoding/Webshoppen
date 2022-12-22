@@ -1,9 +1,4 @@
 ﻿using EF_Demo_many2many2.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EF_Demo_many2many2.Metoder
 {
@@ -91,7 +86,7 @@ namespace EF_Demo_many2many2.Metoder
         }
         public static void InsertKategori()
         {
-            using (var db = new MyDBContext()) 
+            using (var db = new MyDBContext())
             {
                 var newKategori = new Kategori()
                 {
@@ -157,28 +152,116 @@ namespace EF_Demo_many2many2.Metoder
 
 
         }
-        public static void Köp()
+        public static void Admin()
         {
+            Console.WriteLine("PRODUKTER");
+            Console.WriteLine("     Lägga till produkter: ");
+            Console.WriteLine("     Uppdatera produkter: ");
+            Console.WriteLine("     Ta bort produkt: ");
 
-            Console.WriteLine("Vad vill du köpa?");
-            var köp = Console.ReadLine();
+            Console.WriteLine("KUND");
+            Console.WriteLine("     Ändra kunduppgifter: ");
+            Console.WriteLine("     Se beställningshistorik: ");
 
+            enum MenuList
+        {
+            Lägga_till_produkter = 1,
+            Uppdatera_produkter,
+            Ta_bort_produkter,
+            Ändra_kunduppgifter,
+            Se_beställningshistorik,
 
-            Console.WriteLine("Vilken storlek?");
-            var storlek = Console.ReadLine();
-
-            Console.WriteLine("Antal?");
-            var antal = Console.ReadLine();
-
-            Console.WriteLine("Vad vill du ha för leveranssätt?");
-            var leveransSätt = Console.ReadLine();
-
-            Console.WriteLine("Hur vill du betala?");
-            var betalning = Console.ReadLine();
-
-
-
-
+            Quit = 9
         }
+        bool loop = true;
+            while (loop)
+            {
+                foreach (int i in Enum.GetValues(typeof(MenuList)))
+                {
+                    Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuList), i).Replace('', ' ')}"); // samma sak som ovan och lägg till replcae för att få med mellan slag
+                }
+    int nr;
+    MenuList menu = (MenuList)99; // Default
+                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                {
+                    menu = (MenuList) nr;
+    Console.Clear();
+                }
+                else
+{
+    Console.Clear();
+    Console.WriteLine("Fel inmatning");
+}
+
+switch (menu)
+{
+    case MenuList.Lägga_till_produkter:
+
+        break;
+    case MenuList.Uppdatera_produkter:
+
+        break;
+    case MenuList.Ta_bort_produkter:
+
+        break;
+    case MenuList.Ändra_kunduppgifter:
+
+        break;
+    case MenuList.Se_beställningshistorik:
+
+        break;
+}
+            }
+        }
+
+
+    }
+
+    public static void AdminDo()
+{
+    while (true)
+    {
+        switch (menu)
+        {
+            case MenuList.Hello_World:
+                Console.WriteLine("Hejsan världen");
+                break;
+            case MenuList.Time:
+                Console.WriteLine(DateTime.Now);
+                break;
+            case MenuList.Quit:
+                loop = false;
+                break;
+            case MenuList.Visa_alla_produkter:
+                Console.WriteLine("Ost, mjölk...");
+                break;
+        }
+    }
+}
+
+
+}
+public static void Köp()
+{
+
+    Console.WriteLine("Vad vill du köpa?");
+    var köp = Console.ReadLine();
+
+    Console.WriteLine("Vilken storlek?");
+    var storlek = Console.ReadLine();
+
+    Console.WriteLine("Antal?");
+    var antal = Console.ReadLine();
+
+    Console.WriteLine("Vad vill du ha för leveranssätt?");
+    var leveransSätt = Console.ReadLine();
+
+    Console.WriteLine("Hur vill du betala?");
+    var betalning = Console.ReadLine();
+
+
+
+
+}
     }
 }
