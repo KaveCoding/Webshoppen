@@ -14,6 +14,8 @@ namespace EF_Demo_many2many2.Models
         public float Pris { get; set; }
         public string Info { get; set; }
         public bool UtvaldProdukt { get; set; }
+        public int LeverantörId { get; set; }
+        public int KategoriId { get; set; }
         public ICollection<Beställning> Beställningar { get; set; }
         public ICollection<LagerStatus> Lagerstatusar { get; set; }
 

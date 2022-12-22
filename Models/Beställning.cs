@@ -13,7 +13,9 @@ namespace EF_Demo_many2many2.Models
         public float Summa { get; set; }
         public DateTime Datum { get; set; }
        
-
+        public int BetalsättId { get; set; }
+        public int KundId { get; set; }
+        public int ProduktId { get; set; }
 
     }
 }

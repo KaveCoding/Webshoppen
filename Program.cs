@@ -36,8 +36,13 @@ namespace EF_Demo_many2many2
             //    db.SaveChanges();
             //}
             //CRUD.InsertKund();
-            CRUD.InsertLagerStatus();
-           // GetDapperData.Hämta_kategorier();
+            //CRUD.InsertLagerStatus();
+            //CRUD.InsertBetalsätt();
+            //CRUD.InsertBeställningar();
+            // GetDapperData.Hämta_kategorier();
+            //CRUD.InsertKategori();
+            //CRUD.InsertLeverantör();
+            //CRUD.InsertProdukt();
         }
     }
 }

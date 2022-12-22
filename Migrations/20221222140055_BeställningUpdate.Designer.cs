@@ -4,6 +4,7 @@ using EF_Demo_many2many2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF_Demo_many2many2.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    partial class MyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221222140055_BeställningUpdate")]
+    partial class BeställningUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,10 +195,10 @@ namespace EF_Demo_many2many2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("KategoriId")
+                    b.Property<int?>("KategoriId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LeverantörId")
+                    b.Property<int?>("LeverantörId")
                         .HasColumnType("int");
 
                     b.Property<string>("Namn")
@@ -256,15 +258,11 @@ namespace EF_Demo_many2many2.Migrations
                 {
                     b.HasOne("EF_Demo_many2many2.Models.Kategori", null)
                         .WithMany("Produkter")
-                        .HasForeignKey("KategoriId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("KategoriId");
 
                     b.HasOne("EF_Demo_many2many2.Models.Leverantör", null)
                         .WithMany("Produkter")
-                        .HasForeignKey("LeverantörId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LeverantörId");
                 });
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Betalsätt", b =>
