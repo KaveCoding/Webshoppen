@@ -9,20 +9,20 @@ namespace EF_Demo_many2many2.Metoder
 {
     internal class CRUD
     {
-        public static void InsertKund()
+        public static void InsertKund(string namn, string gatuNamn, string stad, string land, string personNummer, string telefonNummer, string email)
         {
 
             using (var db = new MyDBContext()) // insert
             {
                 var newKund = new Kund
                 {
-                    Namn = "Micke",
-                    GatuNamn = "SesamsGatan",
-                    Stad = "Eskilstuna",
-                    Land = "Sverige",
-                    PersonNummer = "010424-1431",
-                    TelefonNummer = "0760106132",
-                    Email = "Mickes132@hotmail.com"
+                    Namn = namn,
+                    GatuNamn = gatuNamn,
+                    Stad = stad,
+                    Land = land,
+                    PersonNummer = personNummer,
+                    TelefonNummer = telefonNummer,
+                    Email = email
                 };
                 var KundList = db.Kunder;
                 KundList.Add(newKund);
@@ -136,7 +136,49 @@ namespace EF_Demo_many2many2.Metoder
                 db.SaveChanges();
             }
         }
-        
+        public static void Kund()
+        {
+            Console.WriteLine("Namn: ");
+            var namn = Console.ReadLine();
+            Console.WriteLine("Gatunamn: ");
+            var gatuNamn = Console.ReadLine();
+            Console.WriteLine("Stad: ");
+            var stad = Console.ReadLine();
+            Console.WriteLine("Land: ");
+            var land = Console.ReadLine();
+            Console.WriteLine("Personnummer: ");
+            var personNummer = Console.ReadLine();
+            Console.WriteLine("Telefonnummer: ");
+            var telefonNummer = Console.ReadLine();
+            Console.WriteLine("Email: ");
+            var email = Console.ReadLine();
 
+            InsertKund(namn, gatuNamn, stad, land, personNummer, telefonNummer, email);
+
+
+        }
+        public static void Köp()
+        {
+
+            Console.WriteLine("Vad vill du köpa?");
+            var köp = Console.ReadLine();
+
+
+            Console.WriteLine("Vilken storlek?");
+            var storlek = Console.ReadLine();
+
+            Console.WriteLine("Antal?");
+            var antal = Console.ReadLine();
+
+            Console.WriteLine("Vad vill du ha för leveranssätt?");
+            var leveransSätt = Console.ReadLine();
+
+            Console.WriteLine("Hur vill du betala?");
+            var betalning = Console.ReadLine();
+
+
+
+
+        }
     }
 }

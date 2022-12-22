@@ -35,7 +35,7 @@ namespace EF_Demo_many2many2
             //    carList.Add(newCar);
             //    db.SaveChanges();
             //}
-            //CRUD.InsertKund();
+            CRUD.Kund();
             //CRUD.InsertLagerStatus();
             //CRUD.InsertBetalsätt();
             //CRUD.InsertBeställningar();
