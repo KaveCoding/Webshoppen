@@ -19,6 +19,7 @@ namespace EF_Demo_many2many2.Models
         public DbSet<Kund> Kunder { get; set; }
         public DbSet<LagerStatus> LagerStatusar { get; set; }
         public DbSet<Beställning> Beställningar { get; set; }
+        public DbSet<Betalsätt> Betalsätter { get; set; }
 
     }
 }

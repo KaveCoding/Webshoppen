@@ -4,6 +4,7 @@ using EF_Demo_many2many2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF_Demo_many2many2.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    partial class MyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221222085417_betalsätt")]
+    partial class betalsätt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +35,6 @@ namespace EF_Demo_many2many2.Migrations
                     b.Property<int>("Antal")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BetalsättId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
@@ -43,8 +42,6 @@ namespace EF_Demo_many2many2.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BetalsättId");
 
                     b.ToTable("Beställningar");
                 });
@@ -57,11 +54,16 @@ namespace EF_Demo_many2many2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("BeställningId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Namn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BeställningId");
 
                     b.ToTable("Betalsätter");
                 });
@@ -207,11 +209,11 @@ namespace EF_Demo_many2many2.Migrations
                     b.ToTable("Produkter");
                 });
 
-            modelBuilder.Entity("EF_Demo_many2many2.Models.Beställning", b =>
+            modelBuilder.Entity("EF_Demo_many2many2.Models.Betalsätt", b =>
                 {
-                    b.HasOne("EF_Demo_many2many2.Models.Betalsätt", null)
-                        .WithMany("Beställningar")
-                        .HasForeignKey("BetalsättId");
+                    b.HasOne("EF_Demo_many2many2.Models.Beställning", null)
+                        .WithMany("Betalsätter")
+                        .HasForeignKey("BeställningId");
                 });
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Kategori", b =>
@@ -244,14 +246,11 @@ namespace EF_Demo_many2many2.Migrations
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Beställning", b =>
                 {
+                    b.Navigation("Betalsätter");
+
                     b.Navigation("Kunder");
 
                     b.Navigation("Produkter");
-                });
-
-            modelBuilder.Entity("EF_Demo_many2many2.Models.Betalsätt", b =>
-                {
-                    b.Navigation("Beställningar");
                 });
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Produkt", b =>
