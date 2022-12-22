@@ -4,6 +4,7 @@ using EF_Demo_many2many2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF_Demo_many2many2.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    partial class MyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221222091051_fix2")]
+    partial class fix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,21 @@ namespace EF_Demo_many2many2.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("BeställningProdukt", b =>
+                {
+                    b.Property<int>("BeställningarId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProdukterId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BeställningarId", "ProdukterId");
+
+                    b.HasIndex("ProdukterId");
+
+                    b.ToTable("BeställningProdukt");
+                });
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Beställning", b =>
                 {
@@ -39,22 +56,12 @@ namespace EF_Demo_many2many2.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("KundId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProduktId")
-                        .HasColumnType("int");
-
                     b.Property<float>("Summa")
                         .HasColumnType("real");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BetalsättId");
-
-                    b.HasIndex("KundId");
-
-                    b.HasIndex("ProduktId");
 
                     b.ToTable("Beställningar");
                 });
@@ -220,19 +227,26 @@ namespace EF_Demo_many2many2.Migrations
                     b.ToTable("Produkter");
                 });
 
+            modelBuilder.Entity("BeställningProdukt", b =>
+                {
+                    b.HasOne("EF_Demo_many2many2.Models.Beställning", null)
+                        .WithMany()
+                        .HasForeignKey("BeställningarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EF_Demo_many2many2.Models.Produkt", null)
+                        .WithMany()
+                        .HasForeignKey("ProdukterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("EF_Demo_many2many2.Models.Beställning", b =>
                 {
                     b.HasOne("EF_Demo_many2many2.Models.Betalsätt", null)
                         .WithMany("Beställningar")
                         .HasForeignKey("BetalsättId");
-
-                    b.HasOne("EF_Demo_many2many2.Models.Kund", null)
-                        .WithMany("Beställningar")
-                        .HasForeignKey("KundId");
-
-                    b.HasOne("EF_Demo_many2many2.Models.Produkt", null)
-                        .WithMany("Beställningar")
-                        .HasForeignKey("ProduktId");
                 });
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.LagerStatus", b =>
@@ -263,11 +277,6 @@ namespace EF_Demo_many2many2.Migrations
                     b.Navigation("Produkter");
                 });
 
-            modelBuilder.Entity("EF_Demo_many2many2.Models.Kund", b =>
-                {
-                    b.Navigation("Beställningar");
-                });
-
             modelBuilder.Entity("EF_Demo_many2many2.Models.Leverantör", b =>
                 {
                     b.Navigation("Produkter");
@@ -275,8 +284,6 @@ namespace EF_Demo_many2many2.Migrations
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Produkt", b =>
                 {
-                    b.Navigation("Beställningar");
-
                     b.Navigation("Lagerstatusar");
                 });
 #pragma warning restore 612, 618

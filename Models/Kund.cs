@@ -16,5 +16,6 @@ namespace EF_Demo_many2many2.Models
         public int PersonNummer { get; set; }
         public int TelefonNummer { get; set; }
         public string Email { get; set; }
+        public ICollection<Beställning> Beställningar { get; set; }
     }
 }

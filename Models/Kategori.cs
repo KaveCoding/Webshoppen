@@ -10,5 +10,6 @@ namespace EF_Demo_many2many2.Models
     {
         public int Id { get; set; }
         public string Namn { get; set; }
+        public ICollection<Produkt> Produkter { get; set; }
     }
 }
