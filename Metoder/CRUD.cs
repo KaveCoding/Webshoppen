@@ -150,7 +150,6 @@ namespace EF_Demo_many2many2.Metoder
 
             InsertKund(namn, gatuNamn, stad, land, personNummer, telefonNummer, email);
 
-
         }
         public static void Admin()
         {
@@ -162,8 +161,9 @@ namespace EF_Demo_many2many2.Metoder
             Console.WriteLine("KUND");
             Console.WriteLine("     Ändra kunduppgifter: ");
             Console.WriteLine("     Se beställningshistorik: ");
+        }
 
-            enum MenuList
+        enum MenuList
         {
             Lägga_till_produkter = 1,
             Uppdatera_produkter,
@@ -173,95 +173,69 @@ namespace EF_Demo_many2many2.Metoder
 
             Quit = 9
         }
-        bool loop = true;
+        public static void AdminDo()
+        {
+            bool loop = true;
             while (loop)
             {
                 foreach (int i in Enum.GetValues(typeof(MenuList)))
                 {
-                    Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuList), i).Replace('', ' ')}"); // samma sak som ovan och lägg till replcae för att få med mellan slag
+                    Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuList), i).Replace('_', ' ')}"); // samma sak som ovan och lägg till replcae för att få med mellan slag
                 }
-    int nr;
-    MenuList menu = (MenuList)99; // Default
+                int nr;
+                MenuList menu = (MenuList)99; // Default
                 if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
                 {
-                    menu = (MenuList) nr;
-    Console.Clear();
+                    menu = (MenuList)nr;
+                    Console.Clear();
                 }
                 else
-{
-    Console.Clear();
-    Console.WriteLine("Fel inmatning");
-}
+                {
+                    Console.Clear();
+                    Console.WriteLine("Fel inmatning");
 
-switch (menu)
-{
-    case MenuList.Lägga_till_produkter:
+                }
+                switch (menu)
+                {
+                    case MenuList.Lägga_till_produkter:
 
-        break;
-    case MenuList.Uppdatera_produkter:
+                        break;
+                    case MenuList.Uppdatera_produkter:
 
-        break;
-    case MenuList.Ta_bort_produkter:
+                        break;
+                    case MenuList.Ta_bort_produkter:
 
-        break;
-    case MenuList.Ändra_kunduppgifter:
+                        break;
+                    case MenuList.Ändra_kunduppgifter:
 
-        break;
-    case MenuList.Se_beställningshistorik:
+                        break;
+                    case MenuList.Se_beställningshistorik:
 
-        break;
-}
+                        break;
+                }
+            }
+            static void Köp()
+            {
+
+                Console.WriteLine("Vad vill du köpa?");
+                var köp = Console.ReadLine();
+
+                Console.WriteLine("Vilken storlek?");
+                var storlek = Console.ReadLine();
+
+                Console.WriteLine("Antal?");
+                var antal = Console.ReadLine();
+
+                Console.WriteLine("Vad vill du ha för leveranssätt?");
+                var leveransSätt = Console.ReadLine();
+
+                Console.WriteLine("Hur vill du betala?");
+                var betalning = Console.ReadLine();
+
             }
         }
-
-
-    }
-
-    public static void AdminDo()
-{
-    while (true)
-    {
-        switch (menu)
-        {
-            case MenuList.Hello_World:
-                Console.WriteLine("Hejsan världen");
-                break;
-            case MenuList.Time:
-                Console.WriteLine(DateTime.Now);
-                break;
-            case MenuList.Quit:
-                loop = false;
-                break;
-            case MenuList.Visa_alla_produkter:
-                Console.WriteLine("Ost, mjölk...");
-                break;
-        }
     }
 }
 
 
-}
-public static void Köp()
-{
-
-    Console.WriteLine("Vad vill du köpa?");
-    var köp = Console.ReadLine();
-
-    Console.WriteLine("Vilken storlek?");
-    var storlek = Console.ReadLine();
-
-    Console.WriteLine("Antal?");
-    var antal = Console.ReadLine();
-
-    Console.WriteLine("Vad vill du ha för leveranssätt?");
-    var leveransSätt = Console.ReadLine();
-
-    Console.WriteLine("Hur vill du betala?");
-    var betalning = Console.ReadLine();
-
-
-
-
-}
-    }
-}
+   
