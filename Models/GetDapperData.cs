@@ -25,7 +25,7 @@ namespace DemoEFDapper
                 foreach (var x in List)
                 {
                     Console.Write(x.Id);
-                    if (x.Namn.Length > 25)
+                    if (x.Namn.Length > 10)
                     {
                         Console.CursorLeft = x.Namn.Length + 10;
                         Console.Write(x.Namn);

@@ -1,4 +1,5 @@
 ﻿using DemoEFDapper;
+using EF_Demo_many2many2.Metoder;
 using EF_Demo_many2many2.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,8 +35,9 @@ namespace EF_Demo_many2many2
             //    carList.Add(newCar);
             //    db.SaveChanges();
             //}
+            CRUD.InsertKund();
 
-            GetDapperData.Hämta_kategorier();
+           // GetDapperData.Hämta_kategorier();
         }
     }
 }
