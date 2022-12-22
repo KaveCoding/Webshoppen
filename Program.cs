@@ -35,8 +35,8 @@ namespace EF_Demo_many2many2
             //    carList.Add(newCar);
             //    db.SaveChanges();
             //}
-            CRUD.InsertKund();
-
+            //CRUD.InsertKund();
+            CRUD.InsertLagerStatus();
            // GetDapperData.Hämta_kategorier();
         }
     }

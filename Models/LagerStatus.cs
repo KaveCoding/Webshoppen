@@ -13,6 +13,7 @@ namespace EF_Demo_many2many2.Models
         public int Id{ get; set; }
         public int Saldo { get; set; }
         public bool Tillgänglig { get; set; }
-        
+        public int ProduktId { get; set; }
+
     }
 }

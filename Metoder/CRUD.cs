@@ -28,6 +28,8 @@ namespace EF_Demo_many2many2.Metoder
             //    KundList.Add(newKund);
             //    db.SaveChanges();
             //}
+
+
             //using (var db = new MyDBContext()) // DELETE
             //{
             //    var deleteTodoListID = (from TDL in db.Kunder
@@ -40,5 +42,21 @@ namespace EF_Demo_many2many2.Metoder
             //    }
             //}
         }
+        //public static void InsertLagerStatus()
+        //{
+        //    using (var db = new MyDBContext()) // insert
+        //    {
+        //        var newLagerstatus = new LagerStatus
+        //        {
+        //            Saldo = 20,
+        //            Tillgänglig = true,
+        //            ProduktId = 2
+                    
+        //        };
+        //        var LagerstatusList = db.LagerStatusar;
+        //        LagerstatusList.Add(newLagerstatus);
+        //        db.SaveChanges();
+        //    }
+        //}
     }
 }
