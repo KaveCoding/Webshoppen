@@ -13,28 +13,24 @@ namespace DemoEFDapper
     {
         public static void Hämta_kategorier()
         {
-            //string connString = "data source=.\\Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
-            
-            //var sql = "SELECT * FROM Kategorier";
+            string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
 
-            //var kategorier = new List<Kategori>();
+            var sql = "SELECT * FROM Kategorier";
 
-            using (var db = new MyDBContext())
+            var kategorier = new List<Kategori>();
+
             {
-                var List = db.Kategorier;
-                foreach (var x in List)
+                using (var connection = new SqlConnection(connString))
                 {
-                    Console.Write(x.Id);
-                    if (x.Namn.Length > 10)
-                    {
-                        Console.CursorLeft = x.Namn.Length + 10;
-                        Console.Write(x.Namn);
-                    }
-                    else
-                    {
-                        Console.CursorLeft = 10;
-                        Console.Write(x.Namn);
-                    }
+                    connection.Open();
+                    kategorier = connection.Query<Kategori>(sql).ToList();
+                    connection.Close();
+                }
+
+                foreach (var x in kategorier)
+                {
+                        Console.WriteLine(x.Namn);
+                        Console.WriteLine(x.Id);
                 }
             }
 
