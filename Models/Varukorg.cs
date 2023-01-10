@@ -9,6 +9,7 @@ namespace EF_Demo_many2many2.Models
     public class Varukorg
     {
         public int VarukorgId { get; set; }
+        public int KundId { get; set; }
         public int ProduktId { get; set; }
         public int ProduktAntal { get; set; }
         public string ProduktStorlek { get; set; }
