@@ -243,20 +243,26 @@ namespace EF_Demo_many2many2.Metoder
                 var kategoriId = Console.ReadLine();
                 var visaProdukter = (from p in db.Produkter
                                      where p.KategoriId == int.Parse(kategoriId)
-                                     select p).SingleOrDefault();
-                if(visaProdukter != null)
+                                     select p);
+                if (visaProdukter != null)
                 {
-                    foreach(var t in db.Produkter)
+                    foreach (var t in visaProdukter)
                     {
                         Console.WriteLine(t.Namn + " " + t.Id);
+                    }
+                    Console.WriteLine("Ange produktId: ");
+                    var produktId = Console.ReadLine();
+                    var visaProdukt = (from p in db.Produkter
+                                         where p.Id == int.Parse(produktId)
+                                         select p).SingleOrDefault();
+                    if(visaProdukt != null)
+                    {
+                        Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}"); 
                     }
                 }
                 else
                 {
-                    foreach (var t in db.Produkter)
-                    {
-                        Console.WriteLine(t.Namn + " " + t.Id);
-                    }
+                    Console.WriteLine("Fel inmatning!");
                 }
             }
         }
