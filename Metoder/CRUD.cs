@@ -1,4 +1,5 @@
 ﻿using EF_Demo_many2many2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EF_Demo_many2many2.Metoder
 {
@@ -231,6 +232,99 @@ namespace EF_Demo_many2many2.Metoder
             Console.WriteLine("Hur vill du betala?");
             var betalning = Console.ReadLine();
         }
+        public static void UpdateProdukt() //Fixa idiotsäkert
+        {
+            Console.WriteLine("Ange produktId att uppdatera: ");
+            var produktUpdate = Console.ReadLine();
+            using (var db = new MyDBContext())
+            {
+                var updateProdukt = (from t in db.Produkter
+                                  where t.Id == int.Parse(produktUpdate)
+                                  select t).SingleOrDefault();
+                if (updateProdukt != null)
+                {
+                    Console.WriteLine("Namn: ");
+                    var namn = Console.ReadLine();
+                    updateProdukt.Namn = namn;
+                    Console.WriteLine("Storlek: ");
+                    var storlek = Console.ReadLine();
+                    updateProdukt.Storlek = storlek;
+                    Console.WriteLine("Pris: ");
+                    var pris = float.Parse(Console.ReadLine());
+                    updateProdukt.Pris = pris;
+                    Console.WriteLine("Info: ");
+                    var info = Console.ReadLine();
+                    updateProdukt.Info = info;
+                    Console.WriteLine("Utvald produkt? Ja/Nej");
+                    var utvald = Console.ReadLine().ToLower();
+                    switch(utvald)
+                    {
+                        case "ja":
+                            updateProdukt.UtvaldProdukt = true;
+                            break;
+                        case "nej":
+                            updateProdukt.UtvaldProdukt = false;
+                            break;
+                        default:
+                            updateProdukt.UtvaldProdukt = false;
+                            break;
+                    }
+                    Console.WriteLine("LeverantörId: ");
+                    var leverantörId = int.Parse(Console.ReadLine());
+                    updateProdukt.LeverantörId = leverantörId;
+                    Console.WriteLine("KategoriId: ");
+                    var kategoriId = int.Parse(Console.ReadLine());
+                    updateProdukt.KategoriId = kategoriId;
+                    db.SaveChanges();
+                }
+            }
+        }
+        public static void UpdateKund()
+        {
+            Console.WriteLine("Ange kundId att uppdatera: ");
+            var kundUpdate = Console.ReadLine();
+            using (var db = new MyDBContext())
+            {
+                var updateKund = (from t in db.Kunder
+                                  where t.Id == int.Parse(kundUpdate)
+                                  select t).SingleOrDefault();
+                if (updateKund != null)
+                {
+                    Console.WriteLine("Namn: ");
+                    var namn = Console.ReadLine();
+                    updateKund.Namn = namn;
+                    Console.WriteLine("Gatunamn: ");
+                    var gatuNamn = Console.ReadLine();
+                    updateKund.GatuNamn = gatuNamn;
+                    Console.WriteLine("Stad: ");
+                    var stad = Console.ReadLine();
+                    updateKund.Stad = stad;
+                    Console.WriteLine("Land: ");
+                    var land = Console.ReadLine();
+                    updateKund.Land = land;
+                    Console.WriteLine("Telefonnummer: ");
+                    var telefonNummer = Console.ReadLine();
+                    updateKund.TelefonNummer = telefonNummer;
+                    db.SaveChanges();
+                }
+            }
+        } //Fixa idiotsäkert
+        public static void DeleteProdukt() //Fixa idiotsäkert
+        {
+            Console.Write("Ange Id att ta bort: ");
+            var produktDelete = Console.ReadLine();
+            using (var db = new MyDBContext())
+            {
+                var deleteProdukt = (from t in db.Produkter
+                                  where t.Id == int.Parse(produktDelete)
+                                  select t).SingleOrDefault();
+                if (deleteProdukt != null)
+                {
+                    db.Produkter.Remove((Produkt)deleteProdukt);
+                    db.SaveChanges();
+                }
+            }
+        }
         public static void VälkomstText()
         {
             Console.WriteLine("Välkommen! Har du ett befintligt konto: Ja/Nej?");
@@ -261,14 +355,13 @@ namespace EF_Demo_many2many2.Metoder
             Lägga_till_produkter = 1,
             Uppdatera_produkter,
             Ta_bort_produkter,
-            Ändra_kunduppgifter,
             Se_beställningshistorik,
             Lägg_till_kategori,
             Lägg_till_betalsätt,
             Lägg_till_leverantör,
             Lägg_till_lagersaldo,
 
-            Quit = 'Q'
+            Quit = 9
         }
         public static void AdminDo()
         {
@@ -298,13 +391,10 @@ namespace EF_Demo_many2many2.Metoder
                         Produkt();
                         break;
                     case MenuList.Uppdatera_produkter:
-
+                        UpdateProdukt();
                         break;
                     case MenuList.Ta_bort_produkter:
-
-                        break;
-                    case MenuList.Ändra_kunduppgifter:
-
+                        DeleteProdukt();
                         break;
                     case MenuList.Se_beställningshistorik:
 

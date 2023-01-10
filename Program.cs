@@ -19,7 +19,9 @@ namespace EF_Demo_many2many2
             //CRUD.InsertLeverantör();
             //CRUD.InsertProdukt();
             //CRUD.Kund();
-            CRUD.AdminDo();
+            //CRUD.AdminDo();
+            //CRUD.UpdateKund();
+            CRUD.UpdateProdukt();
 
 
         }
