@@ -234,7 +234,7 @@ namespace EF_Demo_many2many2.Metoder
             Console.WriteLine("Hur vill du betala?");
             var betalning = Console.ReadLine();
         }
-        public static void VisaProdukter()
+        public static void VisaProdukter(int kundId)
         {
             using (var db = new MyDBContext())
             {
@@ -260,16 +260,21 @@ namespace EF_Demo_many2many2.Metoder
                         Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
                         Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
                         var input = Console.ReadLine().ToLower();
+                        Console.WriteLine("Antal?");
+                        var antal = int.Parse(Console.ReadLine());
+                        float summaTotal = antal * visaProdukt.Pris;
                         switch (input)
                         {
                             case "ja":
-                                LäggTillVarukorg(visaProdukt.Id);
+                                LäggTillVarukorg(kundId, visaProdukt.Id, visaProdukt.Storlek, antal, summaTotal);
                                 break;
                             case "nej":
-
+                                Console.WriteLine("Ej tillagd.");
+                                Console.ReadLine();
+                                Console.Clear();
                                 break;
                             default:
-
+                                Console.Clear();
                                 break;
                         }
                     }
@@ -280,7 +285,7 @@ namespace EF_Demo_many2many2.Metoder
                 }
             }
         }
-        public static void Sök()
+        public static void Sök(int kundId)
         {
             Console.WriteLine("Ange sökord: ");
             var sökord = Console.ReadLine();
@@ -305,37 +310,55 @@ namespace EF_Demo_many2many2.Metoder
                         Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
                         Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
                         var input = Console.ReadLine().ToLower();
+                        Console.WriteLine("Antal?");
+                        var antal = int.Parse(Console.ReadLine());
+                        float summaTotal = antal * visaProdukt.Pris;
                         switch (input)
                         {
                             case "ja":
-                                LäggTillVarukorg(visaProdukt.Id);
+                                LäggTillVarukorg(kundId, visaProdukt.Id, visaProdukt.Storlek, antal, summaTotal);
                                 break;
                             case "nej":
-
+                                Console.WriteLine("Ej tillagd.");
+                                Console.ReadLine();
+                                Console.Clear();
                                 break;
                             default:
-
+                                Console.Clear();
                                 break;
                         }
                     }
                 }
             }
         }
-        public static void VisaHistorik()
+        public static void VisaHistorik(int kundId)
         {
 
         }
-        public static void VisaVarukorg()
+        public static void VisaVarukorg(int kundId)
         {
 
         }
-        public static void Kassa()
+        public static void Kassa(int kundId)
         {
 
         }
-        public static void LäggTillVarukorg(int produktId)
+        public static void LäggTillVarukorg(int kundId, int produktId, string produktStorlek, int produktAntal, float summa)
         {
-
+            using (var db = new MyDBContext())
+            {
+                var newVarukorg = new Varukorg
+                {
+                    KundId = kundId,
+                    ProduktId = produktId,
+                    ProduktStorlek = produktStorlek,
+                    ProduktAntal = produktAntal,
+                    Summa = summa
+                };
+                var VarukorgList = db.Varukorgar;
+                VarukorgList.Add(newVarukorg);
+                db.SaveChanges();
+            }
         }
         public static void UpdateProdukt() //Fixa idiotsäkert
         {
@@ -487,19 +510,19 @@ namespace EF_Demo_many2many2.Metoder
                                             UpdateKund(hittaKund.Id);
                                             break;
                                         case MenuListKund.Visa_Historik:
-                                            VisaHistorik();
+                                            VisaHistorik(hittaKund.Id);
                                             break;
                                         case MenuListKund.Visa_produkter:
-                                            VisaProdukter();
+                                            VisaProdukter(hittaKund.Id);
                                             break;
                                         case MenuListKund.Sök_efter_produkt:
-                                            Sök();
+                                            Sök(hittaKund.Id);
                                             break;
                                         case MenuListKund.Visa_varukorg:
-                                            VisaVarukorg();
+                                            VisaVarukorg(hittaKund.Id);
                                             break;
                                         case MenuListKund.Gå_till_beställning:
-                                            Kassa();
+                                            Kassa(hittaKund.Id);
                                             break;
                                         case MenuListKund.Logga_ut:
                                             loop = false;
