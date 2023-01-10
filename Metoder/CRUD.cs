@@ -257,7 +257,21 @@ namespace EF_Demo_many2many2.Metoder
                                          select p).SingleOrDefault();
                     if(visaProdukt != null)
                     {
-                        Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}"); 
+                        Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
+                        Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
+                        var input = Console.ReadLine().ToLower();
+                        switch (input)
+                        {
+                            case "ja":
+                                LäggTillVarukorg(visaProdukt.Id);
+                                break;
+                            case "nej":
+
+                                break;
+                            default:
+
+                                break;
+                        }
                     }
                 }
                 else
@@ -289,6 +303,20 @@ namespace EF_Demo_many2many2.Metoder
                     if (visaProdukt != null)
                     {
                         Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
+                        Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
+                        var input = Console.ReadLine().ToLower();
+                        switch (input)
+                        {
+                            case "ja":
+                                LäggTillVarukorg(visaProdukt.Id);
+                                break;
+                            case "nej":
+
+                                break;
+                            default:
+
+                                break;
+                        }
                     }
                 }
             }
@@ -302,6 +330,10 @@ namespace EF_Demo_many2many2.Metoder
 
         }
         public static void Kassa()
+        {
+
+        }
+        public static void LäggTillVarukorg(int produktId)
         {
 
         }
