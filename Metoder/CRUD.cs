@@ -37,15 +37,15 @@ namespace EF_Demo_many2many2.Metoder
                 }
             }
         }
-        public static void InsertLagerStatus()
+        public static void InsertLagerStatus(int saldo, int produktId)
         {
             using (var db = new MyDBContext()) // insert
             {
                 var newLagerstatus = new LagerStatus
                 {
-                    Saldo = 20,
+                    Saldo = saldo,
                     Tillgänglig = true,
-                    ProduktId = 2
+                    ProduktId = produktId
 
                 };
                 var LagerstatusList = db.LagerStatusar;
@@ -71,41 +71,41 @@ namespace EF_Demo_many2many2.Metoder
                 db.SaveChanges();
             }
         }
-        public static void InsertBetalsätt()
+        public static void InsertBetalsätt(string namn)
         {
             using (var db = new MyDBContext()) // insert
             {
                 var newBetalsätt = new Betalsätt()
                 {
-                    Namn = "Kreditkort"
+                    Namn = namn
                 };
                 var BetalsättList = db.Betalsätter;
                 BetalsättList.Add(newBetalsätt);
                 db.SaveChanges();
             }
         }
-        public static void InsertKategori()
+        public static void InsertKategori(string namn)
         {
             using (var db = new MyDBContext())
             {
                 var newKategori = new Kategori()
                 {
-                    Namn = "Skor"
+                    Namn = namn
                 };
                 var KategoriList = db.Kategorier;
                 KategoriList.Add(newKategori);
                 db.SaveChanges();
             }
         }
-        public static void InsertLeverantör()
+        public static void InsertLeverantör(string namn, float pris, int leveransTid)
         {
             using (var db = new MyDBContext())
             {
                 var newLeverantör = new Leverantör()
                 {
-                    Namn = "Post Nord",
-                    Pris = 50,
-                    LeveransTid = 48
+                    Namn = namn,
+                    Pris = pris,
+                    LeveransTid = leveransTid
                 };
                 var LeverantörList = db.Leverantörer;
                 LeverantörList.Add(newLeverantör);
@@ -130,6 +130,40 @@ namespace EF_Demo_many2many2.Metoder
                 ProduktList.Add(newProdukt);
                 db.SaveChanges();
             }
+        }
+        public static void LagerStatus()
+        {
+            Console.WriteLine("Saldo: ");
+            var saldo = int.Parse(Console.ReadLine());
+            Console.WriteLine("ProduktId: ");
+            var produktId = int.Parse(Console.ReadLine());
+
+            InsertLagerStatus(saldo, produktId);
+        }
+        public static void Betalsätt()
+        {
+            Console.WriteLine("Namn: ");
+            var namn = Console.ReadLine();
+
+            InsertBetalsätt(namn);
+        }
+        public static void Leverantör()
+        {
+            Console.WriteLine("Namn: ");
+            var namn = Console.ReadLine();
+            Console.WriteLine("Pris: ");
+            var pris = float.Parse(Console.ReadLine());
+            Console.WriteLine("Leveranstid: ");
+            var leveransTid = int.Parse(Console.ReadLine());
+
+            InsertLeverantör(namn, pris, leveransTid);
+        }
+        public static void Kategori()
+        {
+            Console.WriteLine("Namn: ");
+            var namn = Console.ReadLine();
+
+            InsertKategori(namn);
         }
         public static void Produkt()
         {
@@ -205,8 +239,12 @@ namespace EF_Demo_many2many2.Metoder
             Ta_bort_produkter,
             Ändra_kunduppgifter,
             Se_beställningshistorik,
+            Lägg_till_kategori,
+            Lägg_till_betalsätt,
+            Lägg_till_leverantör,
+            Lägg_till_lagersaldo,
 
-            Quit = 9
+            Quit = 'Q'
         }
         public static void AdminDo()
         {
@@ -246,6 +284,18 @@ namespace EF_Demo_many2many2.Metoder
                         break;
                     case MenuList.Se_beställningshistorik:
 
+                        break;
+                    case MenuList.Lägg_till_kategori:
+                        Kategori();
+                        break;
+                    case MenuList.Lägg_till_betalsätt:
+                        Betalsätt();
+                        break;
+                    case MenuList.Lägg_till_leverantör:
+                        Leverantör();
+                        break;
+                    case MenuList.Lägg_till_lagersaldo:
+                        LagerStatus();
                         break;
                 }
             }
