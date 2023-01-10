@@ -231,6 +231,30 @@ namespace EF_Demo_many2many2.Metoder
             Console.WriteLine("Hur vill du betala?");
             var betalning = Console.ReadLine();
         }
+        public static void VälkomstText()
+        {
+            Console.WriteLine("Välkommen! Har du ett befintligt konto: Ja/Nej?");
+            var input = Console.ReadLine().ToLower();
+            switch(input)
+            {
+                case "ja":
+                    Console.WriteLine("Ange epost: ");
+                    var epost = Console.ReadLine();
+                    if(epost.Contains("admin") == true)
+                    {
+                        AdminDo();
+                    }
+
+                    break;
+
+                case "nej":
+                    Kund();
+                    break;
+                default:
+                    Console.WriteLine("Fel inmatning!");
+                    break;
+            }
+        }
 
         enum MenuList
         {
