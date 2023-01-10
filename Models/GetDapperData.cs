@@ -29,11 +29,10 @@ namespace DemoEFDapper
 
                 foreach (var x in kategorier)
                 {
-                        Console.WriteLine(x.Namn);
+                        Console.Write(x.Namn + " ");
                         Console.WriteLine(x.Id);
                 }
             }
-
         }
     }
 }

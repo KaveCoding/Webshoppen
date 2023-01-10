@@ -21,7 +21,8 @@ namespace EF_Demo_many2many2
             //CRUD.Kund();
             //CRUD.AdminDo();
             //CRUD.UpdateKund();
-            CRUD.UpdateProdukt();
+            //CRUD.UpdateProdukt();
+            CRUD.VisaProdukter();
 
 
         }

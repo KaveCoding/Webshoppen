@@ -1,4 +1,6 @@
-﻿using EF_Demo_many2many2.Models;
+﻿using DemoEFDapper;
+using EF_Demo_many2many2.Migrations;
+using EF_Demo_many2many2.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EF_Demo_many2many2.Metoder
@@ -232,6 +234,40 @@ namespace EF_Demo_many2many2.Metoder
             Console.WriteLine("Hur vill du betala?");
             var betalning = Console.ReadLine();
         }
+        public static void VisaProdukter()
+        {
+            using (var db = new MyDBContext())
+            {
+                GetDapperData.Hämta_kategorier();
+                Console.WriteLine("Ange kategoriId: ");
+                var kategoriId = Console.ReadLine();
+                var visaProdukter = (from p in db.Produkter
+                                     where p.KategoriId == int.Parse(kategoriId)
+                                     select p).SingleOrDefault();
+                if(visaProdukter != null)
+                {
+                    foreach(var t in db.Produkter)
+                    {
+                        Console.WriteLine(t.Namn + " " + t.Id);
+                    }
+                }
+                else
+                {
+                    foreach (var t in db.Produkter)
+                    {
+                        Console.WriteLine(t.Namn + " " + t.Id);
+                    }
+                }
+            }
+        }
+        public static void Sök()
+        {
+
+        }
+        public static void VisaHistorik()
+        {
+
+        }
         public static void UpdateProdukt() //Fixa idiotsäkert
         {
             Console.WriteLine("Ange produktId att uppdatera: ");
@@ -325,7 +361,18 @@ namespace EF_Demo_many2many2.Metoder
                 }
             }
         }
-        public static void VälkomstText()
+        enum MenuListKund
+        {
+            Uppdatera_konto = 1,
+            Visa_Historik,
+            Visa_produkter,
+            Sök_efter_produkt,
+            Visa_varukorg,
+            Gå_till_beställning,
+            
+            Logga_ut = 9
+        }
+        public static void VälkomstText() //Fixa idiotsäkert
         {
             Console.WriteLine("Välkommen! Har du ett befintligt konto: Ja/Nej?");
             var input = Console.ReadLine().ToLower();
@@ -338,8 +385,20 @@ namespace EF_Demo_many2many2.Metoder
                     {
                         AdminDo();
                     }
+                    else
+                    {
+                        using (var db = new MyDBContext())
+                        {
+                            var hittaKund = (from t in db.Kunder
+                                              where t.Email == epost
+                                              select t).SingleOrDefault();
+                            if (hittaKund != null)
+                            {
 
-                    break;
+                            }
+                        }
+                    }                    
+                        break;
 
                 case "nej":
                     Kund();
@@ -350,7 +409,7 @@ namespace EF_Demo_many2many2.Metoder
             }
         }
 
-        enum MenuList
+        enum MenuListAdmin
         {
             Lägga_till_produkter = 1,
             Uppdatera_produkter,
@@ -368,15 +427,15 @@ namespace EF_Demo_many2many2.Metoder
             bool loop = true;
             while (loop)
             {
-                foreach (int i in Enum.GetValues(typeof(MenuList)))
+                foreach (int i in Enum.GetValues(typeof(MenuListAdmin)))
                 {
-                    Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuList), i).Replace('_', ' ')}"); // samma sak som ovan och lägg till replcae för att få med mellan slag
+                    Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuListAdmin), i).Replace('_', ' ')}"); // samma sak som ovan och lägg till replcae för att få med mellan slag
                 }
                 int nr;
-                MenuList menu = (MenuList)99; // Default
+                MenuListAdmin menu = (MenuListAdmin)99; // Default
                 if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
                 {
-                    menu = (MenuList)nr;
+                    menu = (MenuListAdmin)nr;
                     Console.Clear();
                 }
                 else
@@ -387,28 +446,28 @@ namespace EF_Demo_many2many2.Metoder
                 }
                 switch (menu)
                 {
-                    case MenuList.Lägga_till_produkter:
+                    case MenuListAdmin.Lägga_till_produkter:
                         Produkt();
                         break;
-                    case MenuList.Uppdatera_produkter:
+                    case MenuListAdmin.Uppdatera_produkter:
                         UpdateProdukt();
                         break;
-                    case MenuList.Ta_bort_produkter:
+                    case MenuListAdmin.Ta_bort_produkter:
                         DeleteProdukt();
                         break;
-                    case MenuList.Se_beställningshistorik:
+                    case MenuListAdmin.Se_beställningshistorik:
 
                         break;
-                    case MenuList.Lägg_till_kategori:
+                    case MenuListAdmin.Lägg_till_kategori:
                         Kategori();
                         break;
-                    case MenuList.Lägg_till_betalsätt:
+                    case MenuListAdmin.Lägg_till_betalsätt:
                         Betalsätt();
                         break;
-                    case MenuList.Lägg_till_leverantör:
+                    case MenuListAdmin.Lägg_till_leverantör:
                         Leverantör();
                         break;
-                    case MenuList.Lägg_till_lagersaldo:
+                    case MenuListAdmin.Lägg_till_lagersaldo:
                         LagerStatus();
                         break;
                 }
