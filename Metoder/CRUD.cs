@@ -112,24 +112,41 @@ namespace EF_Demo_many2many2.Metoder
                 db.SaveChanges();
             }
         }
-        public static void InsertProdukt()
+        public static void InsertProdukt(string namn, string storlek, float pris, string info, int leverantörId, int kategoriId)
         {
             using (var db = new MyDBContext())
             {
                 var newProdukt = new Produkt()
                 {
-                    Namn = "Sneakers",
-                    Storlek = "42",
-                    Pris = 499.95F,
-                    Info = "Feta sneakers",
+                    Namn = namn,
+                    Storlek = storlek,
+                    Pris = pris,
+                    Info = info,
                     UtvaldProdukt = false,
-                    LeverantörId = 2,
-                    KategoriId = 2
+                    LeverantörId = leverantörId,
+                    KategoriId = kategoriId
                 };
                 var ProduktList = db.Produkter;
                 ProduktList.Add(newProdukt);
                 db.SaveChanges();
             }
+        }
+        public static void Produkt()
+        {
+            Console.WriteLine("Namn: ");
+            var namn = Console.ReadLine();
+            Console.WriteLine("Storlek: ");
+            var storlek = Console.ReadLine();
+            Console.WriteLine("Pris: ");
+            var pris = float.Parse(Console.ReadLine());
+            Console.WriteLine("Info: ");
+            var info = Console.ReadLine();
+            Console.WriteLine("LeverantörId: ");
+            var leverantörId = int.Parse(Console.ReadLine());
+            Console.WriteLine("KategoriId: ");
+            var kategoriId = int.Parse(Console.ReadLine());
+
+            InsertProdukt(namn, storlek, pris, info, leverantörId, kategoriId);
         }
         public static void Kund()
         {
@@ -161,6 +178,24 @@ namespace EF_Demo_many2many2.Metoder
             Console.WriteLine("KUND");
             Console.WriteLine("     Ändra kunduppgifter: ");
             Console.WriteLine("     Se beställningshistorik: ");
+        }
+        public static void Köp()
+        {
+
+            Console.WriteLine("Vad vill du köpa?");
+            var köp = Console.ReadLine();
+
+            Console.WriteLine("Vilken storlek?");
+            var storlek = Console.ReadLine();
+
+            Console.WriteLine("Antal?");
+            var antal = Console.ReadLine();
+
+            Console.WriteLine("Vad vill du ha för leveranssätt?");
+            var leveransSätt = Console.ReadLine();
+
+            Console.WriteLine("Hur vill du betala?");
+            var betalning = Console.ReadLine();
         }
 
         enum MenuList
@@ -198,7 +233,7 @@ namespace EF_Demo_many2many2.Metoder
                 switch (menu)
                 {
                     case MenuList.Lägga_till_produkter:
-
+                        Produkt();
                         break;
                     case MenuList.Uppdatera_produkter:
 
@@ -213,25 +248,6 @@ namespace EF_Demo_many2many2.Metoder
 
                         break;
                 }
-            }
-            static void Köp()
-            {
-
-                Console.WriteLine("Vad vill du köpa?");
-                var köp = Console.ReadLine();
-
-                Console.WriteLine("Vilken storlek?");
-                var storlek = Console.ReadLine();
-
-                Console.WriteLine("Antal?");
-                var antal = Console.ReadLine();
-
-                Console.WriteLine("Vad vill du ha för leveranssätt?");
-                var leveransSätt = Console.ReadLine();
-
-                Console.WriteLine("Hur vill du betala?");
-                var betalning = Console.ReadLine();
-
             }
         }
     }

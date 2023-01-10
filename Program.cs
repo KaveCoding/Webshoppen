@@ -14,11 +14,12 @@ namespace EF_Demo_many2many2
             //CRUD.InsertLagerStatus();
             //CRUD.InsertBetalsätt();
             //CRUD.InsertBeställningar();
-            GetDapperData.Hämta_kategorier();
+            //GetDapperData.Hämta_kategorier();
             //CRUD.InsertKategori();
             //CRUD.InsertLeverantör();
             //CRUD.InsertProdukt();
             //CRUD.Kund();
+            CRUD.AdminDo();
 
 
         }
