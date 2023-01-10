@@ -18,6 +18,7 @@ namespace EF_Demo_many2many2.Models
         public int KategoriId { get; set; }
         public ICollection<Beställning> Beställningar { get; set; }
         public ICollection<LagerStatus> Lagerstatusar { get; set; }
+        public ICollection<Varukorg> Varukorgar { get; set; }
 
     }
 }
