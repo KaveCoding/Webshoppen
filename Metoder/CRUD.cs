@@ -268,9 +268,40 @@ namespace EF_Demo_many2many2.Metoder
         }
         public static void Sök()
         {
-
+            Console.WriteLine("Ange sökord: ");
+            var sökord = Console.ReadLine();
+            using (var db = new MyDBContext())
+            {
+                var hittaProdukt = (from t in db.Produkter
+                                 where t.Namn.Contains(sökord)
+                                 select t);
+                if(hittaProdukt != null)
+                {
+                    foreach (var p in hittaProdukt)
+                    {
+                        Console.WriteLine(p.Namn + " " + p.Id);
+                    }
+                    Console.WriteLine("Ange produktId: ");
+                    var produktId = Console.ReadLine();
+                    var visaProdukt = (from p in db.Produkter
+                                       where p.Id == int.Parse(produktId)
+                                       select p).SingleOrDefault();
+                    if (visaProdukt != null)
+                    {
+                        Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
+                    }
+                }
+            }
         }
         public static void VisaHistorik()
+        {
+
+        }
+        public static void VisaVarukorg()
+        {
+
+        }
+        public static void Kassa()
         {
 
         }
@@ -321,14 +352,12 @@ namespace EF_Demo_many2many2.Metoder
                 }
             }
         }
-        public static void UpdateKund()
+        public static void UpdateKund(int id)
         {
-            Console.WriteLine("Ange kundId att uppdatera: ");
-            var kundUpdate = Console.ReadLine();
             using (var db = new MyDBContext())
             {
                 var updateKund = (from t in db.Kunder
-                                  where t.Id == int.Parse(kundUpdate)
+                                  where t.Id == id
                                   select t).SingleOrDefault();
                 if (updateKund != null)
                 {
@@ -400,7 +429,51 @@ namespace EF_Demo_many2many2.Metoder
                                               select t).SingleOrDefault();
                             if (hittaKund != null)
                             {
+                                var loop = true;
+                                while(loop)
+                                {
+                                    foreach (int i in Enum.GetValues(typeof(MenuListKund)))
+                                    {
+                                        Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuListKund), i).Replace('_', ' ')}");
+                                    }
+                                    int nr;
+                                    MenuListKund menu = (MenuListKund)99;
+                                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                                    {
+                                        menu = (MenuListKund)nr;
+                                        Console.Clear();
+                                    }
+                                    else
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Fel inmatning");
 
+                                    }
+                                    switch (menu)
+                                    {
+                                        case MenuListKund.Uppdatera_konto:
+                                            UpdateKund(hittaKund.Id);
+                                            break;
+                                        case MenuListKund.Visa_Historik:
+                                            VisaHistorik();
+                                            break;
+                                        case MenuListKund.Visa_produkter:
+                                            VisaProdukter();
+                                            break;
+                                        case MenuListKund.Sök_efter_produkt:
+                                            Sök();
+                                            break;
+                                        case MenuListKund.Visa_varukorg:
+                                            VisaVarukorg();
+                                            break;
+                                        case MenuListKund.Gå_till_beställning:
+                                            Kassa();
+                                            break;
+                                        case MenuListKund.Logga_ut:
+                                            loop = false;
+                                            break;
+                                    }
+                                }                               
                             }
                         }
                     }                    
@@ -462,7 +535,6 @@ namespace EF_Demo_many2many2.Metoder
                         DeleteProdukt();
                         break;
                     case MenuListAdmin.Se_beställningshistorik:
-
                         break;
                     case MenuListAdmin.Lägg_till_kategori:
                         Kategori();
@@ -475,6 +547,9 @@ namespace EF_Demo_many2many2.Metoder
                         break;
                     case MenuListAdmin.Lägg_till_lagersaldo:
                         LagerStatus();
+                        break;
+                    case MenuListAdmin.Quit:
+                        loop = false;
                         break;
                 }
             }

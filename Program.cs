@@ -1,8 +1,4 @@
-﻿using DemoEFDapper;
-using EF_Demo_many2many2.Metoder;
-using EF_Demo_many2many2.Models;
-using Microsoft.EntityFrameworkCore;
-
+﻿using EF_Demo_many2many2.Metoder;
 
 namespace EF_Demo_many2many2
 {
@@ -22,7 +18,8 @@ namespace EF_Demo_many2many2
             //CRUD.AdminDo();
             //CRUD.UpdateKund();
             //CRUD.UpdateProdukt();
-            CRUD.VisaProdukter();
+            //CRUD.VisaProdukter();
+            CRUD.VälkomstText();
 
 
         }
