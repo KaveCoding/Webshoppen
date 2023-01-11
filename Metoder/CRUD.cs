@@ -1,6 +1,7 @@
 ﻿using DemoEFDapper;
 using EF_Demo_many2many2.Migrations;
 using EF_Demo_many2many2.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
@@ -334,42 +335,44 @@ namespace EF_Demo_many2many2.Metoder
         {
             Console.WriteLine("Vad vill du ha för leveranssätt?");
 
-            Console.WriteLine("1 Kreditkort \n2 Swish\n3 Klarna ");
-            var leveransSätt = Console.ReadLine();
-
             Console.WriteLine("2 Postnord \n3 DHL\n4 Bring ");
 
+
+            var leveransSätt = Console.ReadLine();
+
+
+            Console.WriteLine("1 Kreditkort \n2 Swish\n3 Klarna ");
             Console.WriteLine("Hur vill du betala?");
             var betalning = Console.ReadLine();
 
-           
-            //switch (betalning)
-            //{
-            //    case "1":
-            //        break;
-            //    case "2":
-            //        break;
-            //    case "3":
-            //        break;
-            //}
-
             using (var db = new MyDBContext()) // insert
             {
+                var kundvarukorg = (from t in db.Varukorgar
+                                    where t.KundId == kundId
+                                    select t);
 
-                var newBeställningar = new Beställning
+                foreach (var t in kundvarukorg)
                 {
-                    Antal = 2,
-                    Summa = 99,
-                    Datum = DateTime.Now,
-                    BetalsättId = int.Parse(betalning),
-                    KundId = kundId,
-                    ProduktId = 4
-                };
-                var BeställningList = db.Beställningar;
-                BeställningList.Add(newBeställningar);
-                db.SaveChanges();
+                    var newBeställningar = new Beställning
+                    {
+                        Antal = t.ProduktAntal,
+                        Summa = t.Summa,
+                        Datum = DateTime.Now,
+                        BetalsättId = int.Parse(betalning),
+                        KundId = kundId,
+                        ProduktId = t.ProduktId,
+                        LeverantörId = int.Parse(leveransSätt),
+                        VarukorgId = t.Id
+                    };
+                    var BeställningList = db.Beställningar;
+                    BeställningList.Add(newBeställningar);
 
+                }
+                GetDapperData.Deletevarukorgar(kundId);
 
+               
+
+                    db.SaveChanges();
             }
         }
         public static void LäggTillVarukorg(int kundId, int produktId, string produktStorlek, int produktAntal, float summa)
