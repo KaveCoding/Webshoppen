@@ -7,6 +7,8 @@ namespace EF_Demo_many2many2.Metoder
 {
     internal class CRUD
     {
+
+
         public static void InsertKund(string namn, string gatuNamn, string stad, string land, string personNummer, string telefonNummer, string email)
         {
 
