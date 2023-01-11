@@ -4,6 +4,7 @@ using EF_Demo_many2many2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF_Demo_many2many2.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    partial class MyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230111100157_beställning update")]
+    partial class beställningupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,11 +231,11 @@ namespace EF_Demo_many2many2.Migrations
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Varukorg", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("VarukorgId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VarukorgId"), 1L, 1);
 
                     b.Property<int>("KundId")
                         .HasColumnType("int");
@@ -251,7 +253,7 @@ namespace EF_Demo_many2many2.Migrations
                     b.Property<float>("Summa")
                         .HasColumnType("real");
 
-                    b.HasKey("Id");
+                    b.HasKey("VarukorgId");
 
                     b.HasIndex("KundId");
 
