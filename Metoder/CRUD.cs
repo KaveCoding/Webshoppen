@@ -209,15 +209,6 @@ namespace EF_Demo_many2many2.Metoder
 
         }
  
-        public static void Köp()
-        {
-
-            Console.WriteLine("Vad vill du ha för leveranssätt?");
-            var leveransSätt = Console.ReadLine();
-
-            Console.WriteLine("Hur vill du betala?");
-            var betalning = Console.ReadLine();
-        }
         public static void VisaProdukter(int kundId)
         {
             using (var db = new MyDBContext())
@@ -339,9 +330,47 @@ namespace EF_Demo_many2many2.Metoder
             }
 
         }
-        public static void Kassa(int kundId)
+        public static void Kassa(int kundId) //fixa idioti sen
         {
+            Console.WriteLine("Vad vill du ha för leveranssätt?");
 
+            Console.WriteLine("1 Kreditkort \n2 Swish\n3 Klarna ");
+            var leveransSätt = Console.ReadLine();
+
+            Console.WriteLine("2 Postnord \n3 DHL\n4 Bring ");
+
+            Console.WriteLine("Hur vill du betala?");
+            var betalning = Console.ReadLine();
+
+           
+            //switch (betalning)
+            //{
+            //    case "1":
+            //        break;
+            //    case "2":
+            //        break;
+            //    case "3":
+            //        break;
+            //}
+
+            using (var db = new MyDBContext()) // insert
+            {
+
+                var newBeställningar = new Beställning
+                {
+                    Antal = 2,
+                    Summa = 99,
+                    Datum = DateTime.Now,
+                    BetalsättId = int.Parse(betalning),
+                    KundId = kundId,
+                    ProduktId = 4
+                };
+                var BeställningList = db.Beställningar;
+                BeställningList.Add(newBeställningar);
+                db.SaveChanges();
+
+
+            }
         }
         public static void LäggTillVarukorg(int kundId, int produktId, string produktStorlek, int produktAntal, float summa)
         {

@@ -8,7 +8,9 @@ namespace EF_Demo_many2many2.Models
 {
     public class Beställning
     {
+        
         public int Id { get; set; }
+        public int LeverantörId { get; set; }
         public int Antal { get; set; }
         public float Summa { get; set; }
         public DateTime Datum { get; set; }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF_Demo_many2many2.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20221222091457_fix4")]
-    partial class fix4
+    [Migration("20230111131424_test5")]
+    partial class test5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,20 +35,29 @@ namespace EF_Demo_many2many2.Migrations
                     b.Property<int>("Antal")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BetalsättId")
+                    b.Property<int>("BetalsättId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("KundId")
+                    b.Property<int>("KundId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProduktId")
+                    b.Property<int>("Leverantör")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LeverantörId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProduktId")
                         .HasColumnType("int");
 
                     b.Property<float>("Summa")
                         .HasColumnType("real");
+
+                    b.Property<int>("VarukorgId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -56,7 +65,11 @@ namespace EF_Demo_many2many2.Migrations
 
                     b.HasIndex("KundId");
 
+                    b.HasIndex("LeverantörId");
+
                     b.HasIndex("ProduktId");
+
+                    b.HasIndex("VarukorgId");
 
                     b.ToTable("Beställningar");
                 });
@@ -119,15 +132,17 @@ namespace EF_Demo_many2many2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PersonNummer")
-                        .HasColumnType("int");
+                    b.Property<string>("PersonNummer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Stad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TelefonNummer")
-                        .HasColumnType("int");
+                    b.Property<string>("TelefonNummer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -142,7 +157,7 @@ namespace EF_Demo_many2many2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("ProduktId")
+                    b.Property<int>("ProduktId")
                         .HasColumnType("int");
 
                     b.Property<int>("Saldo")
@@ -193,10 +208,10 @@ namespace EF_Demo_many2many2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("KategoriId")
+                    b.Property<int>("KategoriId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LeverantörId")
+                    b.Property<int>("LeverantörId")
                         .HasColumnType("int");
 
                     b.Property<string>("Namn")
@@ -222,37 +237,107 @@ namespace EF_Demo_many2many2.Migrations
                     b.ToTable("Produkter");
                 });
 
+            modelBuilder.Entity("EF_Demo_many2many2.Models.Varukorg", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("KundId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProduktAntal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProduktId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProduktStorlek")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Summa")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KundId");
+
+                    b.HasIndex("ProduktId");
+
+                    b.ToTable("Varukorgar");
+                });
+
             modelBuilder.Entity("EF_Demo_many2many2.Models.Beställning", b =>
                 {
                     b.HasOne("EF_Demo_many2many2.Models.Betalsätt", null)
                         .WithMany("Beställningar")
-                        .HasForeignKey("BetalsättId");
+                        .HasForeignKey("BetalsättId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EF_Demo_many2many2.Models.Kund", null)
                         .WithMany("Beställningar")
-                        .HasForeignKey("KundId");
+                        .HasForeignKey("KundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EF_Demo_many2many2.Models.Leverantör", null)
+                        .WithMany("Beställningar")
+                        .HasForeignKey("LeverantörId");
 
                     b.HasOne("EF_Demo_many2many2.Models.Produkt", null)
                         .WithMany("Beställningar")
-                        .HasForeignKey("ProduktId");
+                        .HasForeignKey("ProduktId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EF_Demo_many2many2.Models.Varukorg", null)
+                        .WithMany("Beställningar")
+                        .HasForeignKey("VarukorgId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.LagerStatus", b =>
                 {
                     b.HasOne("EF_Demo_many2many2.Models.Produkt", null)
                         .WithMany("Lagerstatusar")
-                        .HasForeignKey("ProduktId");
+                        .HasForeignKey("ProduktId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Produkt", b =>
                 {
                     b.HasOne("EF_Demo_many2many2.Models.Kategori", null)
                         .WithMany("Produkter")
-                        .HasForeignKey("KategoriId");
+                        .HasForeignKey("KategoriId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EF_Demo_many2many2.Models.Leverantör", null)
                         .WithMany("Produkter")
-                        .HasForeignKey("LeverantörId");
+                        .HasForeignKey("LeverantörId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EF_Demo_many2many2.Models.Varukorg", b =>
+                {
+                    b.HasOne("EF_Demo_many2many2.Models.Kund", null)
+                        .WithMany("Varukorgar")
+                        .HasForeignKey("KundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EF_Demo_many2many2.Models.Produkt", null)
+                        .WithMany("Varukorgar")
+                        .HasForeignKey("ProduktId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Betalsätt", b =>
@@ -268,10 +353,14 @@ namespace EF_Demo_many2many2.Migrations
             modelBuilder.Entity("EF_Demo_many2many2.Models.Kund", b =>
                 {
                     b.Navigation("Beställningar");
+
+                    b.Navigation("Varukorgar");
                 });
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Leverantör", b =>
                 {
+                    b.Navigation("Beställningar");
+
                     b.Navigation("Produkter");
                 });
 
@@ -280,6 +369,13 @@ namespace EF_Demo_many2many2.Migrations
                     b.Navigation("Beställningar");
 
                     b.Navigation("Lagerstatusar");
+
+                    b.Navigation("Varukorgar");
+                });
+
+            modelBuilder.Entity("EF_Demo_many2many2.Models.Varukorg", b =>
+                {
+                    b.Navigation("Beställningar");
                 });
 #pragma warning restore 612, 618
         }

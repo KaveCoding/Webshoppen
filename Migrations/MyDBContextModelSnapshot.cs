@@ -42,6 +42,12 @@ namespace EF_Demo_many2many2.Migrations
                     b.Property<int>("KundId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Leverantör")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LeverantörId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProduktId")
                         .HasColumnType("int");
 
@@ -56,6 +62,8 @@ namespace EF_Demo_many2many2.Migrations
                     b.HasIndex("BetalsättId");
 
                     b.HasIndex("KundId");
+
+                    b.HasIndex("LeverantörId");
 
                     b.HasIndex("ProduktId");
 
@@ -274,6 +282,10 @@ namespace EF_Demo_many2many2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EF_Demo_many2many2.Models.Leverantör", null)
+                        .WithMany("Beställningar")
+                        .HasForeignKey("LeverantörId");
+
                     b.HasOne("EF_Demo_many2many2.Models.Produkt", null)
                         .WithMany("Beställningar")
                         .HasForeignKey("ProduktId")
@@ -345,6 +357,8 @@ namespace EF_Demo_many2many2.Migrations
 
             modelBuilder.Entity("EF_Demo_many2many2.Models.Leverantör", b =>
                 {
+                    b.Navigation("Beställningar");
+
                     b.Navigation("Produkter");
                 });
 
