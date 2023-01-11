@@ -14,5 +14,6 @@ namespace EF_Demo_many2many2.Models
         public int ProduktAntal { get; set; }
         public string ProduktStorlek { get; set; }
         public float Summa { get; set; }
+
     }
 }

@@ -207,17 +207,7 @@ namespace EF_Demo_many2many2.Metoder
             InsertKund(namn, gatuNamn, stad, land, personNummer, telefonNummer, email);
 
         }
-        public static void Admin()
-        {
-            Console.WriteLine("PRODUKTER");
-            Console.WriteLine("     Lägga till produkter: ");
-            Console.WriteLine("     Uppdatera produkter: ");
-            Console.WriteLine("     Ta bort produkt: ");
-
-            Console.WriteLine("KUND");
-            Console.WriteLine("     Ändra kunduppgifter: ");
-            Console.WriteLine("     Se beställningshistorik: ");
-        }
+ 
         public static void Köp()
         {
 
@@ -312,12 +302,13 @@ namespace EF_Demo_many2many2.Metoder
                         Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
                         Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
                         var input = Console.ReadLine().ToLower();
-                        Console.WriteLine("Antal?");
-                        var antal = int.Parse(Console.ReadLine());
-                        float summaTotal = antal * visaProdukt.Pris;
+                       
                         switch (input)
                         {
                             case "ja":
+                                Console.WriteLine("Antal?");
+                                var antal = int.Parse(Console.ReadLine());
+                                float summaTotal = antal * visaProdukt.Pris;
                                 LäggTillVarukorg(kundId, visaProdukt.Id, visaProdukt.Storlek, antal, summaTotal);
                                 break;
                             case "nej":
