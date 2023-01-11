@@ -2,6 +2,7 @@
 using EF_Demo_many2many2.Migrations;
 using EF_Demo_many2many2.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EF_Demo_many2many2.Metoder
 {
@@ -211,15 +212,6 @@ namespace EF_Demo_many2many2.Metoder
         public static void Köp()
         {
 
-            Console.WriteLine("Vad vill du köpa?");
-            var köp = Console.ReadLine();
-
-            Console.WriteLine("Vilken storlek?");
-            var storlek = Console.ReadLine();
-
-            Console.WriteLine("Antal?");
-            var antal = Console.ReadLine();
-
             Console.WriteLine("Vad vill du ha för leveranssätt?");
             var leveransSätt = Console.ReadLine();
 
@@ -330,6 +322,21 @@ namespace EF_Demo_many2many2.Metoder
         }
         public static void VisaVarukorg(int kundId)
         {
+            using (var db = new MyDBContext())
+            {
+                var visaVarukorg = (from p in db.Varukorgar
+                                    where p.KundId == kundId
+                                    select p);
+
+                var counter = 1;
+                    foreach (var t in visaVarukorg)
+                    {
+                        Console.WriteLine($" varukorg {counter} {t.ProduktId} {t.ProduktAntal} {t.ProduktStorlek} {t.Summa}");
+                    counter++;
+                    }
+                
+
+            }
 
         }
         public static void Kassa(int kundId)
