@@ -3,6 +3,8 @@ using EF_Demo_many2many2.Migrations;
 using EF_Demo_many2many2.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 
 namespace EF_Demo_many2many2.Metoder
@@ -220,6 +222,7 @@ namespace EF_Demo_many2many2.Metoder
                 var visaProdukter = (from p in db.Produkter
                                      where p.KategoriId == int.Parse(kategoriId)
                                      select p);
+                Console.Clear();
                 if (visaProdukter != null)
                 {
                     foreach (var t in visaProdukter)
@@ -231,7 +234,8 @@ namespace EF_Demo_many2many2.Metoder
                     var visaProdukt = (from p in db.Produkter
                                          where p.Id == int.Parse(produktId)
                                          select p).SingleOrDefault();
-                    if(visaProdukt != null)
+                    Console.Clear();
+                    if (visaProdukt != null)
                     {
                         Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
                         Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
@@ -310,7 +314,21 @@ namespace EF_Demo_many2many2.Metoder
         }
         public static void VisaHistorik(int kundId)
         {
-
+            using (var db = new MyDBContext())
+            {
+                var visaHistorik = (from h in db.Beställningar
+                                    where h.KundId == kundId
+                                    select h);
+                var counter = 1;
+                Console.Clear();
+                foreach (var t in visaHistorik)
+                {
+                    Console.WriteLine($" Beställningsnummer: {counter} BeställningsId: {t.Id} ProduktId: {t.ProduktId} Antal: {t.Antal} Summa: {t.Summa} VarukorgId: {t.VarukorgId} Betalsätt: {t.BetalsättId} LeverantörId: {t.LeverantörId} KundId: {t.KundId}");
+                    counter++;
+                }
+                Console.ReadKey();
+                                Console.Clear();
+            }
         }
         public static void VisaVarukorg(int kundId)
         {
@@ -321,13 +339,14 @@ namespace EF_Demo_many2many2.Metoder
                                     select p);
 
                 var counter = 1;
-                    foreach (var t in visaVarukorg)
+                Console.Clear();
+                foreach (var t in visaVarukorg)
                     {
-                        Console.WriteLine($" varukorg {counter} {t.ProduktId} {t.ProduktAntal} {t.ProduktStorlek} {t.Summa}");
+                        Console.WriteLine($" Varukorg: {counter} ProduktId: {t.ProduktId} Antal: {t.ProduktAntal} Storlek: {t.ProduktStorlek} Summa: {t.Summa}");
                     counter++;
                     }
-                
-
+                Console.ReadKey();
+                Console.Clear();
             }
 
         }
@@ -496,82 +515,100 @@ namespace EF_Demo_many2many2.Metoder
         }
         public static void VälkomstText() //Fixa idiotsäkert
         {
-            Console.WriteLine("Välkommen! Har du ett befintligt konto: Ja/Nej?");
-            var input = Console.ReadLine().ToLower();
-            switch(input)
+            while (true)
             {
-                case "ja":
-                    Console.WriteLine("Ange epost: ");
-                    var epost = Console.ReadLine();
-                    if(epost.Contains("admin") == true)
-                    {
-                        AdminDo();
-                    }
-                    else
-                    {
-                        using (var db = new MyDBContext())
+                Console.WriteLine("Välkommen! Har du ett befintligt konto: Ja/Nej?");
+                var input = Console.ReadLine().ToLower();
+                switch (input)
+                {
+                    case "ja":
+                        Console.WriteLine("Ange epost: ");
+                        var epost = Console.ReadLine();
+                        if (epost.Contains("admin") == true)
                         {
-                            var hittaKund = (from t in db.Kunder
-                                              where t.Email == epost
-                                              select t).SingleOrDefault();
-                            if (hittaKund != null)
-                            {
-                                var loop = true;
-                                while(loop)
-                                {
-                                    foreach (int i in Enum.GetValues(typeof(MenuListKund)))
-                                    {
-                                        Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuListKund), i).Replace('_', ' ')}");
-                                    }
-                                    int nr;
-                                    MenuListKund menu = (MenuListKund)99;
-                                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
-                                    {
-                                        menu = (MenuListKund)nr;
-                                        Console.Clear();
-                                    }
-                                    else
-                                    {
-                                        Console.Clear();
-                                        Console.WriteLine("Fel inmatning");
-
-                                    }
-                                    switch (menu)
-                                    {
-                                        case MenuListKund.Uppdatera_konto:
-                                            UpdateKund(hittaKund.Id);
-                                            break;
-                                        case MenuListKund.Visa_Historik:
-                                            VisaHistorik(hittaKund.Id);
-                                            break;
-                                        case MenuListKund.Visa_produkter:
-                                            VisaProdukter(hittaKund.Id);
-                                            break;
-                                        case MenuListKund.Sök_efter_produkt:
-                                            Sök(hittaKund.Id);
-                                            break;
-                                        case MenuListKund.Visa_varukorg:
-                                            VisaVarukorg(hittaKund.Id);
-                                            break;
-                                        case MenuListKund.Gå_till_beställning:
-                                            Kassa(hittaKund.Id);
-                                            break;
-                                        case MenuListKund.Logga_ut:
-                                            loop = false;
-                                            break;
-                                    }
-                                }                               
-                            }
+                            AdminDo();
                         }
-                    }                    
+                        else
+                        {
+                            using (var db = new MyDBContext())
+                            {
+                                var hittaKund = (from t in db.Kunder
+                                                 where t.Email == epost
+                                                 select t).SingleOrDefault();
+                                if (hittaKund != null)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Välkommen " + hittaKund.Namn);
+                                    var loop = true;
+                                    while (loop)
+                                    {
+                                        foreach (int i in Enum.GetValues(typeof(MenuListKund)))
+                                        {
+                                            Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuListKund), i).Replace('_', ' ')}");
+                                        }
+                                        int nr;
+                                        MenuListKund menu = (MenuListKund)99;
+                                        if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                                        {
+                                            menu = (MenuListKund)nr;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Fel inmatning");
+
+                                        }
+                                        switch (menu)
+                                        {
+                                            case MenuListKund.Uppdatera_konto:
+                                                Console.Clear();
+                                                UpdateKund(hittaKund.Id);
+                                                break;
+                                            case MenuListKund.Visa_Historik:
+                                                Console.Clear();
+                                                VisaHistorik(hittaKund.Id);
+                                                break;
+                                            case MenuListKund.Visa_produkter:
+                                                Console.Clear();
+                                                VisaProdukter(hittaKund.Id);
+                                                break;
+                                            case MenuListKund.Sök_efter_produkt:
+                                                Console.Clear();
+                                                Sök(hittaKund.Id);
+                                                break;
+                                            case MenuListKund.Visa_varukorg:
+                                                Console.Clear();
+                                                VisaVarukorg(hittaKund.Id);
+                                                break;
+                                            case MenuListKund.Gå_till_beställning:
+                                                Console.Clear();
+                                                Kassa(hittaKund.Id);
+                                                break;
+                                            case MenuListKund.Logga_ut:
+                                                Console.Clear();
+                                                loop = false;
+                                                break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Existerar inte");
+                                    Console.ReadKey();
+                                    Console.Clear();
+                                }
+                            }
+
+                        }
                         break;
 
-                case "nej":
-                    Kund();
-                    break;
-                default:
-                    Console.WriteLine("Fel inmatning!");
-                    break;
+                    case "nej":
+                        Kund();
+                        break;
+                    default:
+                        Console.WriteLine("Fel inmatning!");
+                        break;
+                }
             }
         }
 
