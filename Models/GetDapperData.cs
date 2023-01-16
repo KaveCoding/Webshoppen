@@ -102,7 +102,7 @@ namespace DemoEFDapper
         {
             string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
 
-            var sql = $"SELECT KategoriId, COUNT(KategoriId) AS Antal FROM Beställningar b" +
+            var sql = $"SELECT KategoriId as ProduktId, COUNT(KategoriId) AS Antal FROM Beställningar b" +
                 $" JOIN Produkter p ON p.Id = b.ProduktId " +
                 $"GROUP BY KategoriId";
             var bästSäljareKategori = new List<Beställning>();
@@ -116,7 +116,7 @@ namespace DemoEFDapper
                 Console.WriteLine("Bästsäljare högst upp");
                 foreach (var x in bästSäljareKategori)
                 {
-                    Console.WriteLine($"ProduktId: {x.ProduktId} Antal: {x.Antal}"); //Propertierna overloadeas :)
+                    Console.WriteLine($"KategoriId: {x.ProduktId} Antal: {x.Antal}"); //Propertierna overloadeas :)
                 }
             }
         }
