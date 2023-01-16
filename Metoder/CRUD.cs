@@ -345,6 +345,7 @@ namespace EF_Demo_many2many2.Metoder
         {
             using (var db = new MyDBContext())
             {
+                int switcher;
                 var visaVarukorg = (from p in db.Varukorgar
                                     where p.KundId == kundId
                                     select p);
@@ -356,11 +357,86 @@ namespace EF_Demo_many2many2.Metoder
                         Console.WriteLine($" Varukorg: {counter} ProduktId: {t.ProduktId} Antal: {t.ProduktAntal} Storlek: {t.ProduktStorlek} Summa: {t.Summa}");
                     counter++;
                     }
+                Console.WriteLine("[1] Vill du ändra antal på en produkt");
+                Console.WriteLine("[2] Vill du ta bort en produkt");
+                Console.WriteLine("[3] Gå tillbaka");
+                switcher = int.Parse(Console.ReadLine());
+                switch (switcher)
+                {
+                    case 1:
+                        UpdateVarukorg(kundId);
+                        break;
+                    case 2:
+                        DeleteProductVaruKorg(kundId);
+                        break;
+                    default:
+                        break;
+                }
+
+
                 Console.ReadKey();
                 Console.Clear();
+
             }
 
         }
+        public static void UpdateVarukorg(int kundID)
+        {
+            using (var db = new MyDBContext())
+            {
+                Console.WriteLine("Vilken produkt vill du uppdatera? (Ange ProduktID)");
+                int nr;
+                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                {
+                    var visaVarukorg = (from p in db.Varukorgar
+                                        where p.ProduktId == nr
+                                        select p).SingleOrDefault();
+                    if (visaVarukorg != null && visaVarukorg.KundId == kundID)
+                    {
+                        Console.WriteLine("Produkt Antal: ");
+                        var antal = int.Parse(Console.ReadLine());
+                        visaVarukorg.ProduktAntal = antal;
+                        db.SaveChanges();
+                    }
+                    }
+                else
+                {
+                    Console.WriteLine("Fel inmatning");
+                }
+            }
+        }
+        public static void DeleteProductVaruKorg(int kundID)
+        {
+
+            Console.Write("Ange Id att ta bort: ");
+            int nr;
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+            {
+                using (var db = new MyDBContext())
+                {
+                    var deleteProdukt = (from t in db.Varukorgar
+                                         where t.ProduktId == nr
+                                         select t).SingleOrDefault();
+
+                    if (deleteProdukt != null && deleteProdukt.KundId == kundID)
+                    {
+                        db.Varukorgar.Remove((Varukorg)deleteProdukt);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Fel inmatning");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Fel inmatning");
+            }
+
+        }
+
+
         public static void Kassa(int kundId) //fixa idioti sen
         {
             using (var db = new MyDBContext()) 
@@ -437,52 +513,69 @@ namespace EF_Demo_many2many2.Metoder
         public static void UpdateProdukt() //Fixa idiotsäkert
         {
             Console.WriteLine("Ange produktId att uppdatera: ");
-            var produktUpdate = Console.ReadLine();
-            using (var db = new MyDBContext())
+            int produktUpdate;
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out produktUpdate))
             {
-                var updateProdukt = (from t in db.Produkter
-                                  where t.Id == int.Parse(produktUpdate)
-                                  select t).SingleOrDefault();
-                if (updateProdukt != null)
+                using (var db = new MyDBContext())
                 {
-                    Console.WriteLine("Namn: ");
-                    var namn = Console.ReadLine();
-                    updateProdukt.Namn = namn;
-                    Console.WriteLine("Storlek: ");
-                    var storlek = Console.ReadLine();
-                    updateProdukt.Storlek = storlek;
-                    Console.WriteLine("Pris: ");
-                    var pris = float.Parse(Console.ReadLine());
-                    updateProdukt.Pris = pris;
-                    Console.WriteLine("Info: ");
-                    var info = Console.ReadLine();
-                    updateProdukt.Info = info;
-                    Console.WriteLine("Utvald produkt? Ja/Nej");
-                    var utvald = Console.ReadLine().ToLower();
-                    switch(utvald)
+                    var updateProdukt = (from t in db.Produkter
+                                         where t.Id == produktUpdate
+                                         select t).SingleOrDefault();
+                    if (updateProdukt != null)
                     {
-                        case "ja":
-                            updateProdukt.UtvaldProdukt = true;
-                            break;
-                        case "nej":
-                            updateProdukt.UtvaldProdukt = false;
-                            break;
-                        default:
-                            updateProdukt.UtvaldProdukt = false;
-                            break;
+                        Console.WriteLine("Namn: ");
+                        var namn = Console.ReadLine();
+                        updateProdukt.Namn = namn;
+                        Console.WriteLine("Storlek: ");
+                        var storlek = Console.ReadLine();
+                        updateProdukt.Storlek = storlek;
+                        Console.WriteLine("Pris: ");
+                        var pris = float.Parse(Console.ReadLine());
+                        updateProdukt.Pris = pris;
+                        Console.WriteLine("Info: ");
+                        var info = Console.ReadLine();
+                        updateProdukt.Info = info;
+                        Console.WriteLine("Utvald produkt? Ja/Nej");
+                        var utvald = Console.ReadLine().ToLower();
+                        switch (utvald)
+                        {
+                            case "ja":
+                                updateProdukt.UtvaldProdukt = true;
+                                break;
+                            case "nej":
+                                updateProdukt.UtvaldProdukt = false;
+                                break;
+                            default:
+                                updateProdukt.UtvaldProdukt = false;
+                                break;
+                        }
+                        Console.WriteLine("LeverantörId: ");
+                        var leverantörId = int.Parse(Console.ReadLine());
+                        updateProdukt.LeverantörId = leverantörId;
+                        Console.WriteLine("KategoriId: ");
+                        var kategoriId = int.Parse(Console.ReadLine());
+                        updateProdukt.KategoriId = kategoriId;
+                        db.SaveChanges();
+                        Console.Clear();
+                        Console.WriteLine("Lyckad uppdatering av produkt");
+                        Console.ReadKey();
+                        Console.Clear();
                     }
-                    Console.WriteLine("LeverantörId: ");
-                    var leverantörId = int.Parse(Console.ReadLine());
-                    updateProdukt.LeverantörId = leverantörId;
-                    Console.WriteLine("KategoriId: ");
-                    var kategoriId = int.Parse(Console.ReadLine());
-                    updateProdukt.KategoriId = kategoriId;
-                    db.SaveChanges();
-                    Console.Clear();
-                    Console.WriteLine("Lyckad uppdatering av produkt");
-                    Console.ReadKey();
-                    Console.Clear();
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Finns inte");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
                 }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Fel inmatning");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
         public static void UpdateKund(int id)
@@ -516,17 +609,38 @@ namespace EF_Demo_many2many2.Metoder
         public static void DeleteProdukt() //Fixa idiotsäkert
         {
             Console.Write("Ange Id att ta bort: ");
-            var produktDelete = Console.ReadLine();
-            using (var db = new MyDBContext())
+            int produktDelete;
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out produktDelete))
             {
-                var deleteProdukt = (from t in db.Produkter
-                                  where t.Id == int.Parse(produktDelete)
-                                  select t).SingleOrDefault();
-                if (deleteProdukt != null)
+                using (var db = new MyDBContext())
                 {
-                    db.Produkter.Remove((Produkt)deleteProdukt);
-                    db.SaveChanges();
+                    var deleteProdukt = (from t in db.Produkter
+                                         where t.Id == produktDelete
+                                         select t).SingleOrDefault();
+                    if (deleteProdukt != null)
+                    {
+                        db.Produkter.Remove((Produkt)deleteProdukt);
+                        db.SaveChanges();
+                        Console.Clear();
+                        Console.WriteLine("Produkten har blivit deletad");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Existerar inte");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
                 }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Fel inmatning");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
         enum MenuListKund
@@ -551,88 +665,107 @@ namespace EF_Demo_many2many2.Metoder
                     case "ja":
                         Console.WriteLine("Ange epost: ");
                         var epost = Console.ReadLine();
-                        if (epost.Contains("admin") == true)
+                        using (var db = new MyDBContext())
                         {
-                            AdminDo();
-                        }
-                        else
-                        {
-                            using (var db = new MyDBContext())
+                            var hittaAdmin = (from t in db.AdminLogins
+                                              where t.Namn == epost
+                                              select t).SingleOrDefault();
+                            if (hittaAdmin != null)
                             {
-                                var hittaKund = (from t in db.Kunder
-                                                 where t.Email == epost
-                                                 select t).SingleOrDefault();
-                                if (hittaKund != null)
+                                Console.WriteLine("Ange Lösenord");
+                                string lösen = Console.ReadLine();
+                                if (lösen == hittaAdmin.Lösen)
                                 {
                                     Console.Clear();
-                                    Console.WriteLine("Välkommen " + hittaKund.Namn);
-                                    var loop = true;
-                                    while (loop)
-                                    {
-                                        foreach (int i in Enum.GetValues(typeof(MenuListKund)))
-                                        {
-                                            Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuListKund), i).Replace('_', ' ')}");
-                                        }
-                                        UtvaldProdukt();
-                                        int nr;
-                                        MenuListKund menu = (MenuListKund)99;
-                                        if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
-                                        {
-                                            menu = (MenuListKund)nr;
-                                        }
-                                        else
-                                        {
-                                            Console.Clear();
-                                            Console.WriteLine("Fel inmatning");
-                                            Console.ReadKey();
-                                            Console.Clear();
-                                        }
-                                        switch (menu)
-                                        {
-                                            case MenuListKund.Uppdatera_konto:
-                                                Console.Clear();
-                                                UpdateKund(hittaKund.Id);
-                                                break;
-                                            case MenuListKund.Visa_Historik:
-                                                Console.Clear();
-                                                VisaHistorik(hittaKund.Id);
-                                                break;
-                                            case MenuListKund.Visa_produkter:
-                                                Console.Clear();
-                                                VisaProdukter(hittaKund.Id);
-                                                break;
-                                            case MenuListKund.Sök_efter_produkt:
-                                                Console.Clear();
-                                                Sök(hittaKund.Id);
-                                                break;
-                                            case MenuListKund.Visa_varukorg:
-                                                Console.Clear();
-                                                VisaVarukorg(hittaKund.Id);
-                                                break;
-                                            case MenuListKund.Gå_till_beställning:
-                                                Console.Clear();
-                                                Kassa(hittaKund.Id);
-                                                break;
-                                            case MenuListKund.Logga_ut:
-                                                Console.Clear();
-                                                loop = false;
-                                                break;
-                                            default:
-                                                Console.Clear();
-                                                Console.WriteLine("Fel inmatning");
-                                                Console.ReadKey();
-                                                Console.Clear();
-                                                break;
-                                        }
-                                    }
+                                    AdminDo();
                                 }
                                 else
                                 {
                                     Console.Clear();
-                                    Console.WriteLine("Existerar inte");
+                                    Console.WriteLine("Lösenordet är fel");
                                     Console.ReadKey();
                                     Console.Clear();
                                 }
+                            }
+                            else
+                            {
+                                
+                                    var hittaKund = (from t in db.Kunder
+                                                     where t.Email == epost
+                                                     select t).SingleOrDefault();
+                                    if (hittaKund != null)
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Välkommen " + hittaKund.Namn);
+                                        var loop = true;
+                                        while (loop)
+                                        {
+                                            foreach (int i in Enum.GetValues(typeof(MenuListKund)))
+                                            {
+                                                Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuListKund), i).Replace('_', ' ')}");
+                                            }
+                                            UtvaldProdukt();
+                                            int nr;
+                                            MenuListKund menu = (MenuListKund)99;
+                                            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                                            {
+                                                menu = (MenuListKund)nr;
+                                            }
+                                            else
+                                            {
+                                                Console.Clear();
+                                                Console.WriteLine("Fel inmatning");
+                                                Console.ReadKey();
+                                                Console.Clear();
+                                            }
+                                            switch (menu)
+                                            {
+                                                case MenuListKund.Uppdatera_konto:
+                                                    Console.Clear();
+                                                    UpdateKund(hittaKund.Id);
+                                                    break;
+                                                case MenuListKund.Visa_Historik:
+                                                    Console.Clear();
+                                                    VisaHistorik(hittaKund.Id);
+                                                    break;
+                                                case MenuListKund.Visa_produkter:
+                                                    Console.Clear();
+                                                    VisaProdukter(hittaKund.Id);
+                                                    break;
+                                                case MenuListKund.Sök_efter_produkt:
+                                                    Console.Clear();
+                                                    Sök(hittaKund.Id);
+                                                    break;
+                                                case MenuListKund.Visa_varukorg:
+                                                    Console.Clear();
+                                                    VisaVarukorg(hittaKund.Id);
+                                                    break;
+                                                case MenuListKund.Gå_till_beställning:
+                                                    Console.Clear();
+                                                    Kassa(hittaKund.Id);
+                                                    break;
+                                                case MenuListKund.Logga_ut:
+                                                    Console.Clear();
+                                                    loop = false;
+                                                    break;
+                                                default:
+                                                    Console.Clear();
+                                                    Console.WriteLine("Fel inmatning");
+                                                    Console.ReadKey();
+                                                    Console.Clear();
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Existerar inte");
+                                        Console.ReadKey();
+                                        Console.Clear();
+                                    }
+                            
+
                             }
 
                         }
@@ -642,7 +775,10 @@ namespace EF_Demo_many2many2.Metoder
                         Kund();
                         break;
                     default:
+                        Console.Clear();
                         Console.WriteLine("Fel inmatning!");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                 }
             }
@@ -702,6 +838,8 @@ namespace EF_Demo_many2many2.Metoder
                         Console.WriteLine("-----------------------------");
                         GetDapperData.HämtaBästSäljareKategori();
                         Console.WriteLine("-----------------------------");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case MenuListAdmin.Lägg_till_kategori:
                         Kategori();

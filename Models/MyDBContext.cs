@@ -21,6 +21,7 @@ namespace EF_Demo_many2many2.Models
         public DbSet<Beställning> Beställningar { get; set; }
         public DbSet<Betalsätt> Betalsätter { get; set; }
         public DbSet<Varukorg> Varukorgar { get; set; }
+        public DbSet<AdminLogIn> AdminLogins { get; set; }
 
     }
 }
