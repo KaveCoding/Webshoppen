@@ -116,7 +116,7 @@ namespace DemoEFDapper
                 Console.WriteLine("Bästsäljare högst upp");
                 foreach (var x in bästSäljareKategori)
                 {
-                    Console.WriteLine($"ProduktId: {x.ProduktId} Antal: {x.Antal}"); //Propertierna overloadeas
+                    Console.WriteLine($"ProduktId: {x.ProduktId} Antal: {x.Antal}"); //Propertierna overloadeas :)
                 }
             }
         }
