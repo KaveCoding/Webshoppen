@@ -217,7 +217,7 @@ namespace EF_Demo_many2many2.Metoder
 
         public class Read : Adminmetoder
         {
-            public static void Queries() //Read
+            public static void Queries() 
             {
                 using (var db = new MyDBContext())
                 {

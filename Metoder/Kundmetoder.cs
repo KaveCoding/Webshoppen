@@ -31,10 +31,11 @@ namespace EF_Demo_many2many2.Metoder
                 KundVärden(namn, gatuNamn, stad, land, personNummer, telefonNummer, email);
 
             }
+
             public static void KundVärden(string namn, string gatuNamn, string stad, string land, string personNummer, string telefonNummer, string email)
             {
 
-                using (var db = new MyDBContext()) // insert
+                using (var db = new MyDBContext())
                 {
                     var newKund = new Kund
                     {
@@ -64,6 +65,7 @@ namespace EF_Demo_many2many2.Metoder
                     }
                 }
             }
+
             public static void Varor (int kundId, int produktId, string produktStorlek, int produktAntal, float summa)
             {
                 using (var db = new MyDBContext())
