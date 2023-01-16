@@ -478,6 +478,10 @@ namespace EF_Demo_many2many2.Metoder
                     var kategoriId = int.Parse(Console.ReadLine());
                     updateProdukt.KategoriId = kategoriId;
                     db.SaveChanges();
+                    Console.Clear();
+                    Console.WriteLine("Lyckad uppdatering av produkt");
+                    Console.ReadKey();
+                    Console.Clear();
                 }
             }
         }
@@ -569,6 +573,7 @@ namespace EF_Demo_many2many2.Metoder
                                         {
                                             Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuListKund), i).Replace('_', ' ')}");
                                         }
+                                        UtvaldProdukt();
                                         int nr;
                                         MenuListKund menu = (MenuListKund)99;
                                         if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
@@ -706,6 +711,20 @@ namespace EF_Demo_many2many2.Metoder
                     case MenuListAdmin.Quit:
                         loop = false;
                         break;
+                }
+            }
+        }
+        public static void UtvaldProdukt()
+        {
+            using (var db = new MyDBContext())
+            {
+                var hittaUtvald = (from p in db.Produkter
+                                   where p.UtvaldProdukt == true
+                                   select p);
+                Console.WriteLine("SUPERREA!!!!");
+                foreach(var p in hittaUtvald)
+                {
+                    Console.WriteLine($"{p.Namn} - {p.Info} - {p.Pris}");
                 }
             }
         }
