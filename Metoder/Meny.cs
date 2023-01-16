@@ -9,9 +9,9 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace EF_Demo_many2many2.Metoder
 {
-    internal class CRUD
+    internal class Meny
     {
-        public static void VälkomstText() //Fixa idiotsäkert
+        public static void VälkomstText() 
         {
             while (true)
             { 
