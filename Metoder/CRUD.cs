@@ -653,7 +653,7 @@ namespace EF_Demo_many2many2.Metoder
             Lägga_till_produkter = 1,
             Uppdatera_produkter,
             Ta_bort_produkter,
-            Se_beställningshistorik,
+            Se_Queries,
             Lägg_till_kategori,
             Lägg_till_betalsätt,
             Lägg_till_leverantör,
@@ -694,7 +694,9 @@ namespace EF_Demo_many2many2.Metoder
                     case MenuListAdmin.Ta_bort_produkter:
                         DeleteProdukt();
                         break;
-                    case MenuListAdmin.Se_beställningshistorik:
+                    case MenuListAdmin.Se_Queries:
+                        GetDapperData.HämtaBästSäljare();
+                        GetDapperData.LagerStatusQuery();
                         break;
                     case MenuListAdmin.Lägg_till_kategori:
                         Kategori();
@@ -721,11 +723,22 @@ namespace EF_Demo_many2many2.Metoder
                 var hittaUtvald = (from p in db.Produkter
                                    where p.UtvaldProdukt == true
                                    select p);
+                Console.ForegroundColor= ConsoleColor.Green;
                 Console.WriteLine("SUPERREA!!!!");
                 foreach(var p in hittaUtvald)
                 {
-                    Console.WriteLine($"{p.Namn} - {p.Info} - {p.Pris}");
+                    Console.WriteLine($"{p.Namn} - {p.Info} - NU ENDAST {p.Pris} SEK!");
                 }
+                Console.ResetColor();
+            }
+        }
+        public static void Queries()
+        {
+            using (var db = new MyDBContext())
+            {
+                var bästSäljare = (from h in db.Beställningar
+                                   orderby h.ProduktId descending
+                                   select h);
             }
         }
     }
