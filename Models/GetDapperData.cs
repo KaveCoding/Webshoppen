@@ -36,21 +36,26 @@ namespace DemoEFDapper
                 }
             }
         }
-
-
-        public static void Deletevarukorgar(int kundId)
+        public static void HämtaBästSäljareKategori()
         {
             string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
 
-            var sql = $"delete from Varukorgar where KundId = {kundId} ";
+            var sql = $"SELECT KategoriId as ProduktId, COUNT(KategoriId) AS Antal FROM Beställningar b" +
+                $" JOIN Produkter p ON p.Id = b.ProduktId " +
+                $"GROUP BY KategoriId";
+            var bästSäljareKategori = new List<Beställning>();
             {
                 using (var connection = new SqlConnection(connString))
                 {
                     connection.Open();
-                    connection.Execute(sql);
+                    bästSäljareKategori = connection.Query<Beställning>(sql).ToList();
                     connection.Close();
                 }
-
+                Console.WriteLine("Bästsäljare högst upp");
+                foreach (var x in bästSäljareKategori)
+                {
+                    Console.WriteLine($"KategoriId: {x.ProduktId} Antal: {x.Antal}"); //Propertierna overloadeas :)
+                }
             }
         }
         public static void HämtaBästSäljareProdukt()
@@ -77,6 +82,21 @@ namespace DemoEFDapper
                 }
             }
         }
+        public static void Deletevarukorgar(int kundId)
+        {
+            string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
+
+            var sql = $"delete from Varukorgar where KundId = {kundId} ";
+            {
+                using (var connection = new SqlConnection(connString))
+                {
+                    connection.Open();
+                    connection.Execute(sql);
+                    connection.Close();
+                }
+
+            }
+        }
         public static void LagerStatusQuery()
         {
             string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
@@ -98,28 +118,7 @@ namespace DemoEFDapper
                 }
             }
         }
-        public static void HämtaBästSäljareKategori()
-        {
-            string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
-
-            var sql = $"SELECT KategoriId as ProduktId, COUNT(KategoriId) AS Antal FROM Beställningar b" +
-                $" JOIN Produkter p ON p.Id = b.ProduktId " +
-                $"GROUP BY KategoriId";
-            var bästSäljareKategori = new List<Beställning>();
-            {
-                using (var connection = new SqlConnection(connString))
-                {
-                    connection.Open();
-                    bästSäljareKategori = connection.Query<Beställning>(sql).ToList();
-                    connection.Close();
-                }
-                Console.WriteLine("Bästsäljare högst upp");
-                foreach (var x in bästSäljareKategori)
-                {
-                    Console.WriteLine($"KategoriId: {x.ProduktId} Antal: {x.Antal}"); //Propertierna overloadeas :)
-                }
-            }
-        }
+        
     }
 }
 
