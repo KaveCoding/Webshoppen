@@ -717,7 +717,7 @@ namespace EF_Demo_many2many2.Metoder
                         break;
                     case MenuListAdmin.Quit:
                         loop = false;
-                        break;
+                        break; 
                 }
             }
         }
