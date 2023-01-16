@@ -53,7 +53,7 @@ namespace EF_Demo_many2many2.Metoder
                     if (lösen == hittaAdmin.Lösen)
                     {
                         Console.Clear();
-                        Adminkör();
+                        AdminLogin();
                     }
                     else
                     {
@@ -65,8 +65,7 @@ namespace EF_Demo_many2many2.Metoder
                 }
                 else
                 {
-                    KundKör(epost);
-
+                    KundLogin(epost);
                 }
             }
         }
@@ -255,7 +254,7 @@ namespace EF_Demo_many2many2.Metoder
 
             Quit = 9
         }
-        public static void KundKör(string epost)
+        public static void KundLogin(string epost)
         {
             using (var db = new MyDBContext())
             {
@@ -337,7 +336,7 @@ namespace EF_Demo_many2many2.Metoder
                 
             
         }
-        public static void Adminkör()
+        public static void AdminLogin()
         {
             bool loop = true;
             while (loop)
