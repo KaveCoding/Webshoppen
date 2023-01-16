@@ -7,6 +7,7 @@ using EF_Demo_many2many2.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace DemoEFDapper
 {
@@ -52,7 +53,7 @@ namespace DemoEFDapper
 
             }
         }
-        public static void HämtaBästSäljare()
+        public static void HämtaBästSäljareProdukt()
         {
             string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
 
@@ -60,17 +61,17 @@ namespace DemoEFDapper
                 $"\r\nFROM dbo.Beställningar" +
                 $"\r\nGroup By ProduktId \r\n" +
                 $"ORDER BY Antal desc ";
-            var bästSäljare = new List<Beställning>();
+            var bästSäljareProdukt = new List<Beställning>();
             {
 
                 using (var connection = new SqlConnection(connString))
                 {
                     connection.Open();
-                    bästSäljare = connection.Query<Beställning>(sql).ToList();
+                    bästSäljareProdukt = connection.Query<Beställning>(sql).ToList();
                     connection.Close();
                 }
                 Console.WriteLine("Bästsäljare högst upp");
-                foreach (var x in bästSäljare)
+                foreach (var x in bästSäljareProdukt)
                 {
                     Console.WriteLine($"ProduktId: {x.ProduktId} Antal: {x.Antal}");
                 }
@@ -97,27 +98,25 @@ namespace DemoEFDapper
                 }
             }
         }
-        public static void HämtaBästsäljareKategori()
+        public static void HämtaBästSäljareKategori()
         {
             string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
 
-            var sql = $"SELECT KategoriId, COUNT(ProduktId) AS Antal " +
-                $"\r\nFROM dbo.Beställningar" +
-                $"\r\nGroup By ProduktId \r\n" +
-                $"ORDER BY Antal desc ";
-            var bästSäljare = new List<Beställning>();
+            var sql = $"SELECT KategoriId, COUNT(KategoriId) AS Antal FROM Beställningar b" +
+                $" JOIN Produkter p ON p.Id = b.ProduktId " +
+                $"GROUP BY KategoriId";
+            var bästSäljareKategori = new List<Beställning>();
             {
-
                 using (var connection = new SqlConnection(connString))
                 {
                     connection.Open();
-                    bästSäljare = connection.Query<Beställning>(sql).ToList();
+                    bästSäljareKategori = connection.Query<Beställning>(sql).ToList();
                     connection.Close();
                 }
                 Console.WriteLine("Bästsäljare högst upp");
-                foreach (var x in bästSäljare)
+                foreach (var x in bästSäljareKategori)
                 {
-                    Console.WriteLine($"ProduktId: {x.ProduktId} Antal: {x.Antal}");
+                    Console.WriteLine($"ProduktId: {x.ProduktId} Antal: {x.Antal}"); //Propertierna overloadeas
                 }
             }
         }

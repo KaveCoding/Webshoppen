@@ -695,8 +695,13 @@ namespace EF_Demo_many2many2.Metoder
                         DeleteProdukt();
                         break;
                     case MenuListAdmin.Se_Queries:
-                        GetDapperData.HämtaBästSäljare();
+                        Console.Clear();
+                        GetDapperData.HämtaBästSäljareProdukt();
+                        Console.WriteLine("-----------------------------");
                         GetDapperData.LagerStatusQuery();
+                        Console.WriteLine("-----------------------------");
+                        GetDapperData.HämtaBästSäljareKategori();
+                        Console.WriteLine("-----------------------------");
                         break;
                     case MenuListAdmin.Lägg_till_kategori:
                         Kategori();
