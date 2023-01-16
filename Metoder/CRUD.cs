@@ -363,47 +363,59 @@ namespace EF_Demo_many2many2.Metoder
         }
         public static void Kassa(int kundId) //fixa idioti sen
         {
-            Console.WriteLine("Vad vill du ha för leveranssätt?");
-
-            Console.WriteLine("2 Postnord \n3 DHL\n4 Bring ");
-
-
-            var leveransSätt = Console.ReadLine();
-
-
-            Console.WriteLine("1 Kreditkort \n2 Swish\n3 Klarna ");
-            Console.WriteLine("Hur vill du betala?");
-            var betalning = Console.ReadLine();
-
-            using (var db = new MyDBContext()) // insert
+            using (var db = new MyDBContext()) 
             {
                 var kundvarukorg = (from t in db.Varukorgar
                                     where t.KundId == kundId
                                     select t);
-
-                foreach (var t in kundvarukorg)
+                if(kundvarukorg.Count() < 0)
                 {
-                    var newBeställningar = new Beställning
+                    Console.WriteLine("Vad vill du ha för leveranssätt?");
+
+                    Console.WriteLine("2 Postnord \n3 DHL\n4 Bring ");
+
+
+                    var leveransSätt = Console.ReadLine();
+
+
+                    Console.WriteLine("1 Kreditkort \n2 Swish\n3 Klarna ");
+                    Console.WriteLine("Hur vill du betala?");
+                    var betalning = Console.ReadLine();
+
+                    foreach (var t in kundvarukorg)
                     {
-                        Antal = t.ProduktAntal,
-                        Summa = t.Summa,
-                        Datum = DateTime.Now,
-                        BetalsättId = int.Parse(betalning),
-                        KundId = kundId,
-                        ProduktId = t.ProduktId,
-                        LeverantörId = int.Parse(leveransSätt),
-                        VarukorgId = t.Id
-                    };
-                    var BeställningList = db.Beställningar;
-                    BeställningList.Add(newBeställningar);
+                        var newBeställningar = new Beställning
+                        {
+                            Antal = t.ProduktAntal,
+                            Summa = t.Summa,
+                            Datum = DateTime.Now,
+                            BetalsättId = int.Parse(betalning),
+                            KundId = kundId,
+                            ProduktId = t.ProduktId,
+                            LeverantörId = int.Parse(leveransSätt),
+                            VarukorgId = t.Id
+                        };
+                        var BeställningList = db.Beställningar;
+                        BeställningList.Add(newBeställningar);
 
-                }
-                GetDapperData.Deletevarukorgar(kundId);
-
-               
-
+                    }
+                    GetDapperData.Deletevarukorgar(kundId);
                     db.SaveChanges();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Varukorgen är tom.");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
             }
+            
+
+
+            
+                
+            
         }
         public static void LäggTillVarukorg(int kundId, int produktId, string produktStorlek, int produktAntal, float summa)
         {
