@@ -134,7 +134,7 @@ namespace EF_Demo_many2many2.Metoder
                             Console.ReadKey();
                             Console.Clear();
                         }
-                            
+
                     }
                     else
                     {
@@ -151,7 +151,7 @@ namespace EF_Demo_many2many2.Metoder
                     Console.ReadKey();
                     Console.Clear();
                 }
-                
+
             }
         }
         public static void Sök(int kundId)
@@ -161,9 +161,9 @@ namespace EF_Demo_many2many2.Metoder
             using (var db = new MyDBContext())
             {
                 var hittaProdukt = (from t in db.Produkter
-                                 where t.Namn.Contains(sökord)
-                                 select t);
-                if(hittaProdukt != null)
+                                    where t.Namn.Contains(sökord)
+                                    select t);
+                if (hittaProdukt != null)
                 {
                     foreach (var p in hittaProdukt)
                     {
@@ -215,18 +215,14 @@ namespace EF_Demo_many2many2.Metoder
                         Console.ReadKey();
                         Console.Clear();
                     }
-                        
+
                 }
             }
         }
-        public static float HämtaFraktPris(float fraktPris)
+        public static void Kassa(int kundId)
         {
-            return fraktPris;
-        }
-        public static void Kassa(int kundId) 
-        {
-            Console.WriteLine("Vad vill du ha för leveranssätt?");
-            using (var db = new MyDBContext()) 
+            float summaPris;
+            using (var db = new MyDBContext())
             {
                 var kundvarukorg = (from t in db.Varukorgar
                                     where t.KundId == kundId
@@ -235,31 +231,35 @@ namespace EF_Demo_many2many2.Metoder
                                     select t);
                 if (kundvarukorg.Count() > 0)
                 {
-                    
-                    foreach(var l in leverantörer)
+                    Console.WriteLine("Vad vill du ha för leveranssätt?");
+                    foreach (var l in leverantörer)
                     {
                         Console.WriteLine($"{l.Id} - {l.Namn} - {l.Pris} SEK - Uppskattad leveranstid: {l.LeveransTid} timmar");
                     }
-                    int leveransSätt;
-                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out leveransSätt))
+
+                    var leveransSätt = Console.ReadLine();
+                    float fraktPris = 0;
+                    switch (leveransSätt)
                     {
-                        var fraktPris = (from t in db.Leverantörer
-                                        where t.Id == leveransSätt
-                                        select t).SingleOrDefault();
-                        if(fraktPris != null)
-                        {
-                            HämtaFraktPris(fraktPris.Pris);
-                        }
-                    }
-                    else
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Fel inmatning.");
-                        Console.ReadKey();
-                        Console.Clear();
+                        case "2":
+                            fraktPris = 50;
+                            break;
+                        case "3":
+                            fraktPris = 45;
+                            break;
+                        case "4":
+                            fraktPris = 35;
+                            break;
+
+                        default:
+                            Console.Clear();
+                            Console.WriteLine("Felinmatning");
+                            Console.ReadKey();
+                            Console.Clear();
+                            break;
                     }
 
-                    
+
                     Console.WriteLine("1 Kreditkort \n2 Swish\n3 Klarna ");
                     Console.WriteLine("Hur vill du betala?");
                     var betalning = Console.ReadLine();
@@ -269,7 +269,7 @@ namespace EF_Demo_many2many2.Metoder
                         var newBeställningar = new Beställning
                         {
                             Antal = t.ProduktAntal,
-                            Summa = t.Summa,
+                            Summa = t.Summa + fraktPris,
                             Datum = DateTime.Now,
                             BetalsättId = int.Parse(betalning),
                             KundId = kundId,
@@ -282,7 +282,7 @@ namespace EF_Demo_many2many2.Metoder
                         BeställningList.Add(newBeställningar);
                         UppdateraLagerstatus(t.ProduktId, t.ProduktAntal);
                     }
-                    
+
                     GetDapperData.Deletevarukorgar(kundId);
                     db.SaveChanges();
 
@@ -308,7 +308,7 @@ namespace EF_Demo_many2many2.Metoder
             Sök_efter_produkt,
             Visa_varukorg,
             Gå_till_beställning,
-            
+
             Logga_ut = 9
         }
         enum MenuListAdmin
@@ -403,8 +403,8 @@ namespace EF_Demo_many2many2.Metoder
                     Console.Clear();
                 }
             }
-                
-            
+
+
         }
         public static void AdminLogin()
         {
@@ -464,7 +464,7 @@ namespace EF_Demo_many2many2.Metoder
                         break;
                     case MenuListAdmin.Quit:
                         loop = false;
-                        break; 
+                        break;
                 }
             }
         }
@@ -475,9 +475,9 @@ namespace EF_Demo_many2many2.Metoder
                 var hittaUtvald = (from p in db.Produkter
                                    where p.UtvaldProdukt == true
                                    select p);
-                Console.ForegroundColor= ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("SUPERREA!!!!");
-                foreach(var p in hittaUtvald)
+                foreach (var p in hittaUtvald)
                 {
                     Console.WriteLine($"{p.Namn} - {p.Info} - NU ENDAST {p.Pris} SEK!");
                 }
@@ -503,4 +503,4 @@ namespace EF_Demo_many2many2.Metoder
 }
 
 
-   
+
