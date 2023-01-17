@@ -238,6 +238,27 @@ namespace EF_Demo_many2many2.Metoder
                     }
                     
                     var leveransSätt = Console.ReadLine();
+                    float fraktPris = 0;
+                    switch(leveransSätt)
+                    {
+                        case "2":
+                            fraktPris = 50;
+                            break;
+                        case "3":
+                            fraktPris = 45;
+                            break;
+                        case "4":
+                            fraktPris = 35;
+                            break;
+
+                        default:
+                            Console.Clear();
+                            Console.WriteLine("Felinmatning");
+                            Console.ReadKey();
+                            Console.Clear();
+                            break;
+                    }
+                        
 
                     Console.WriteLine("1 Kreditkort \n2 Swish\n3 Klarna ");
                     Console.WriteLine("Hur vill du betala?");
@@ -248,7 +269,7 @@ namespace EF_Demo_many2many2.Metoder
                         var newBeställningar = new Beställning
                         {
                             Antal = t.ProduktAntal,
-                            Summa = t.Summa,
+                            Summa = t.Summa + fraktPris,
                             Datum = DateTime.Now,
                             BetalsättId = int.Parse(betalning),
                             KundId = kundId,
