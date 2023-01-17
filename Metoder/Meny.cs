@@ -219,9 +219,13 @@ namespace EF_Demo_many2many2.Metoder
                 }
             }
         }
+        public static float HämtaFraktPris(float fraktPris)
+        {
+            return fraktPris;
+        }
         public static void Kassa(int kundId) 
         {
-            float summaPris;
+            Console.WriteLine("Vad vill du ha för leveranssätt?");
             using (var db = new MyDBContext()) 
             {
                 var kundvarukorg = (from t in db.Varukorgar
@@ -231,14 +235,31 @@ namespace EF_Demo_many2many2.Metoder
                                     select t);
                 if (kundvarukorg.Count() > 0)
                 {
-                    Console.WriteLine("Vad vill du ha för leveranssätt?");
+                    
                     foreach(var l in leverantörer)
                     {
                         Console.WriteLine($"{l.Id} - {l.Namn} - {l.Pris} SEK - Uppskattad leveranstid: {l.LeveransTid} timmar");
                     }
-                    
-                    var leveransSätt = Console.ReadLine();
+                    int leveransSätt;
+                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out leveransSätt))
+                    {
+                        var fraktPris = (from t in db.Leverantörer
+                                        where t.Id == leveransSätt
+                                        select t).SingleOrDefault();
+                        if(fraktPris != null)
+                        {
+                            HämtaFraktPris(fraktPris.Pris);
+                        }
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Fel inmatning.");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
 
+                    
                     Console.WriteLine("1 Kreditkort \n2 Swish\n3 Klarna ");
                     Console.WriteLine("Hur vill du betala?");
                     var betalning = Console.ReadLine();
