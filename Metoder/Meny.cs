@@ -226,7 +226,7 @@ namespace EF_Demo_many2many2.Metoder
                 var kundvarukorg = (from t in db.Varukorgar
                                     where t.KundId == kundId
                                     select t);
-                if(kundvarukorg.Count() < 0)
+                if(kundvarukorg.Count() > 0)
                 {
                     Console.WriteLine("Vad vill du ha för leveranssätt?");
 
@@ -259,6 +259,11 @@ namespace EF_Demo_many2many2.Metoder
                     }
                     GetDapperData.Deletevarukorgar(kundId);
                     db.SaveChanges();
+
+                    Console.Clear();
+                    Console.WriteLine("Tack för din beställning :-)");
+                    Console.ReadKey();
+                    Console.Clear();
                 }
                 else
                 {

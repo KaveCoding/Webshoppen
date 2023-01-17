@@ -140,6 +140,10 @@ namespace EF_Demo_many2many2.Metoder
                     var ProduktList = db.Produkter;
                     ProduktList.Add(newProdukt);
                     db.SaveChanges();
+                    Console.Clear();
+                    Console.WriteLine("Produkt tillagd.");
+                    Console.ReadKey();
+                    Console.Clear();
                 }
             }
         }
@@ -148,8 +152,9 @@ namespace EF_Demo_many2many2.Metoder
             public static void Produkt() 
             {
                 Console.WriteLine("Ange produktId att uppdatera: ");
+                string inmatning = Console.ReadLine();
                 int produktUpdate;
-                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out produktUpdate))
+                if (int.TryParse(inmatning, out produktUpdate))
                 {
                     using (var db = new MyDBContext())
                     {

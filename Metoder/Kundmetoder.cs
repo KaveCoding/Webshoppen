@@ -232,13 +232,19 @@ namespace EF_Demo_many2many2.Metoder
                         }
                         else
                         {
-                            Console.WriteLine("Fel inmatning");
+                            Console.Clear();
+                            Console.WriteLine("Existerar inte.");
+                            Console.ReadKey();
+                            Console.Clear();
                         }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Fel inmatning");
+                    Console.Clear();
+                    Console.WriteLine("Fel inmatning.");
+                    Console.ReadKey();
+                    Console.Clear();
                 }
 
             }
