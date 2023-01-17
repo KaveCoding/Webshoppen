@@ -184,25 +184,30 @@ namespace EF_Demo_many2many2.Metoder
                     Console.WriteLine("[1] Vill du ändra antal på en produkt");
                     Console.WriteLine("[2] Vill du ta bort en produkt");
                     Console.WriteLine("[3] Gå tillbaka");
-                    switcher = int.Parse(Console.ReadLine());
-                    switch (switcher)
+                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out switcher))
                     {
-                        case 1:
-                            Update.Varukorg((kundId));
-                            break;
-                        case 2:
-                            Delete.ProduktVaruKorg(kundId);
-                            break;
-                        default:
-                            break;
+                        switch (switcher)
+                        {
+                            case 1:
+                                Update.Varukorg((kundId));
+                                break;
+                            case 2:
+                                Delete.ProduktVaruKorg(kundId);
+                                break;
+                            default:
+                                break;
+                        }
+                        Console.ReadKey();
+                        Console.Clear();
                     }
-
-
-                    Console.ReadKey();
-                    Console.Clear();
-
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Fel inmatning.");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
                 }
-
             }
         }
 

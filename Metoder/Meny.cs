@@ -89,38 +89,59 @@ namespace EF_Demo_many2many2.Metoder
                             Console.WriteLine(t.Namn + " " + t.Id);
                         }
                         Console.WriteLine("Ange produktId: ");
-                        var produktId = Console.ReadLine();
-                        var visaProdukt = (from p in db.Produkter
-                                           where p.Id == int.Parse(produktId)
-                                           select p).SingleOrDefault();
-                        Console.Clear();
-                        if (visaProdukt != null)
+                        int produktId;
+                        if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out produktId))
                         {
-                            Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
-                            Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
-                            var input = Console.ReadLine().ToLower();
-                            Console.WriteLine("Antal?");
-                            var antal = int.Parse(Console.ReadLine());
-                            float summaTotal = antal * visaProdukt.Pris;
-                            switch (input)
+                            var visaProdukt = (from p in db.Produkter
+                                               where p.Id == produktId
+                                               select p).SingleOrDefault();
+                            Console.Clear();
+                            if (visaProdukt != null)
                             {
-                                case "ja":
-                                    Kundmetoder.Insert.Varor(kundId, visaProdukt.Id, visaProdukt.Storlek, antal, summaTotal);
-                                    break;
-                                case "nej":
-                                    Console.WriteLine("Ej tillagd.");
-                                    Console.ReadLine();
-                                    Console.Clear();
-                                    break;
-                                default:
-                                    Console.Clear();
-                                    break;
+                                Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
+                                Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
+                                var input = Console.ReadLine().ToLower();
+                                Console.WriteLine("Antal?");
+                                var antal = int.Parse(Console.ReadLine());
+                                float summaTotal = antal * visaProdukt.Pris;
+                                switch (input)
+                                {
+                                    case "ja":
+                                        Kundmetoder.Insert.Varor(kundId, visaProdukt.Id, visaProdukt.Storlek, antal, summaTotal);
+                                        break;
+                                    case "nej":
+                                        Console.WriteLine("Ej tillagd.");
+                                        Console.ReadLine();
+                                        Console.Clear();
+                                        break;
+                                    default:
+                                        Console.Clear();
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Existerar inte.");
+                                Console.ReadKey();
+                                Console.Clear();
                             }
                         }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Fel inmatning");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                            
                     }
                     else
                     {
-                        Console.WriteLine("Fel inmatning!");
+                        Console.Clear();
+                        Console.WriteLine("Fel inmatning");
+                        Console.ReadKey();
+                        Console.Clear();
                     }
                 }
                 else
@@ -149,34 +170,52 @@ namespace EF_Demo_many2many2.Metoder
                         Console.WriteLine(p.Namn + " " + p.Id);
                     }
                     Console.WriteLine("Ange produktId: ");
-                    var produktId = Console.ReadLine();
-                    var visaProdukt = (from p in db.Produkter
-                                       where p.Id == int.Parse(produktId)
-                                       select p).SingleOrDefault();
-                    if (visaProdukt != null)
+                    int produktId;
+                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out produktId))
                     {
-                        Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
-                        Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
-                        var input = Console.ReadLine().ToLower();
-                       
-                        switch (input)
+                        var visaProdukt = (from p in db.Produkter
+                                           where p.Id == produktId
+                                           select p).SingleOrDefault();
+                        if (visaProdukt != null)
                         {
-                            case "ja":
-                                Console.WriteLine("Antal?");
-                                var antal = int.Parse(Console.ReadLine());
-                                float summaTotal = antal * visaProdukt.Pris;
-                                Kundmetoder.Insert.Varor(kundId, visaProdukt.Id, visaProdukt.Storlek, antal, summaTotal);
-                                break;
-                            case "nej":
-                                Console.WriteLine("Ej tillagd.");
-                                Console.ReadLine();
-                                Console.Clear();
-                                break;
-                            default:
-                                Console.Clear();
-                                break;
+                            Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
+                            Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
+                            var input = Console.ReadLine().ToLower();
+
+                            switch (input)
+                            {
+                                case "ja":
+                                    Console.WriteLine("Antal?");
+                                    var antal = int.Parse(Console.ReadLine());
+                                    float summaTotal = antal * visaProdukt.Pris;
+                                    Kundmetoder.Insert.Varor(kundId, visaProdukt.Id, visaProdukt.Storlek, antal, summaTotal);
+                                    break;
+                                case "nej":
+                                    Console.WriteLine("Ej tillagd.");
+                                    Console.ReadLine();
+                                    Console.Clear();
+                                    break;
+                                default:
+                                    Console.Clear();
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Existerar inte.");
+                            Console.ReadKey();
+                            Console.Clear();
                         }
                     }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Fel inmatning.");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+                        
                 }
             }
         }
