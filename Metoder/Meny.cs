@@ -227,6 +227,16 @@ namespace EF_Demo_many2many2.Metoder
                 var kundvarukorg = (from t in db.Varukorgar
                                     where t.KundId == kundId
                                     select t);
+                var counter = 1;
+                float summatotal = 0;
+                Console.Clear();
+                foreach (var t in kundvarukorg)
+                {
+                    Console.WriteLine($" Varukorg: {counter} ProduktId: {t.ProduktId} Antal: {t.ProduktAntal} Storlek: {t.ProduktStorlek} Summa: {t.Summa}");
+                    summatotal = summatotal + t.Summa;
+                    counter++;
+                }
+                Console.WriteLine("Summa av alla produkter: " + summatotal);
                 var leverantörer = (from t in db.Leverantörer
                                     select t);
                 if (kundvarukorg.Count() > 0)

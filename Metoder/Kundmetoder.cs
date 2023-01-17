@@ -175,12 +175,15 @@ namespace EF_Demo_many2many2.Metoder
                                         select p);
 
                     var counter = 1;
+                    float summatotal = 0;
                     Console.Clear();
                     foreach (var t in visaVarukorg)
                     {
                         Console.WriteLine($" Varukorg: {counter} ProduktId: {t.ProduktId} Antal: {t.ProduktAntal} Storlek: {t.ProduktStorlek} Summa: {t.Summa}");
+                        summatotal = summatotal + t.Summa;
                         counter++;
                     }
+                    Console.WriteLine("Summa av alla produkter: " + summatotal);
                     Console.WriteLine("[1] Vill du ändra antal på en produkt");
                     Console.WriteLine("[2] Vill du ta bort en produkt");
                     Console.WriteLine("[3] Gå tillbaka");
