@@ -221,20 +221,23 @@ namespace EF_Demo_many2many2.Metoder
         }
         public static void Kassa(int kundId) 
         {
+            float summaPris;
             using (var db = new MyDBContext()) 
             {
                 var kundvarukorg = (from t in db.Varukorgar
                                     where t.KundId == kundId
                                     select t);
-                if(kundvarukorg.Count() > 0)
+                var leverantörer = (from t in db.Leverantörer
+                                    select t);
+                if (kundvarukorg.Count() > 0)
                 {
                     Console.WriteLine("Vad vill du ha för leveranssätt?");
-
-                    Console.WriteLine("2 Postnord \n3 DHL\n4 Bring ");
-
-
+                    foreach(var l in leverantörer)
+                    {
+                        Console.WriteLine($"{l.Id} - {l.Namn} - {l.Pris} SEK - Uppskattad leveranstid: {l.LeveransTid} timmar");
+                    }
+                    
                     var leveransSätt = Console.ReadLine();
-
 
                     Console.WriteLine("1 Kreditkort \n2 Swish\n3 Klarna ");
                     Console.WriteLine("Hur vill du betala?");
@@ -253,10 +256,12 @@ namespace EF_Demo_many2many2.Metoder
                             LeverantörId = int.Parse(leveransSätt),
                             VarukorgId = t.Id
                         };
+
                         var BeställningList = db.Beställningar;
                         BeställningList.Add(newBeställningar);
-
+                        UppdateraLagerstatus(t.ProduktId, t.ProduktAntal);
                     }
+                    
                     GetDapperData.Deletevarukorgar(kundId);
                     db.SaveChanges();
 
@@ -456,6 +461,21 @@ namespace EF_Demo_many2many2.Metoder
                     Console.WriteLine($"{p.Namn} - {p.Info} - NU ENDAST {p.Pris} SEK!");
                 }
                 Console.ResetColor();
+            }
+        }
+        public static void UppdateraLagerstatus(int produktId, int antal)
+        {
+            using (var db = new MyDBContext())
+            {
+                var updateProdukt = (from t in db.LagerStatusar
+                                     where t.ProduktId == produktId
+                                     select t).SingleOrDefault();
+                if (updateProdukt != null)
+                {
+                    updateProdukt.Saldo = updateProdukt.Saldo - antal;
+
+                    db.SaveChanges();
+                }
             }
         }
     }
