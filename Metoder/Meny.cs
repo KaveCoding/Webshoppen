@@ -73,7 +73,7 @@ namespace EF_Demo_many2many2.Metoder
         {
             using (var db = new MyDBContext())
             {
-                GetDapperData.Hämta_kategorier();
+                Adminmetoder.Read.Hämta_kategorier();
                 Console.WriteLine("Ange kategoriId: ");
                 int kategoriId;
                 if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out kategoriId))
@@ -451,11 +451,11 @@ namespace EF_Demo_many2many2.Metoder
                         break;
                     case MenuListAdmin.Se_Queries:
                         Console.Clear();
-                        GetDapperData.HämtaBästSäljareProdukt();
+                        Adminmetoder.Read.HämtaBästSäljareProdukt();
                         Console.WriteLine("-----------------------------");
                         GetDapperData.LagerStatusQuery();
                         Console.WriteLine("-----------------------------");
-                        GetDapperData.HämtaBästSäljareKategori();
+                        Adminmetoder.Read.HämtaBästSäljareKategori();
                         Console.WriteLine("-----------------------------");
                         Console.ReadKey();
                         Console.Clear();
