@@ -75,8 +75,13 @@ namespace EF_Demo_many2many2.Metoder
             {
                 Adminmetoder.Read.Hämta_kategorier();
                 Console.WriteLine("Ange kategoriId: ");
-                int kategoriId;
-                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out kategoriId))
+               int kategoriId;
+               var input =Console.ReadLine();
+                Console.WriteLine();
+
+
+
+                if (int.TryParse(input, out kategoriId))
                 {
                     var visaProdukter = (from p in db.Produkter
                                          where p.KategoriId == kategoriId
@@ -90,7 +95,8 @@ namespace EF_Demo_many2many2.Metoder
                         }
                         Console.WriteLine("Ange produktId: ");
                         int produktId;
-                        if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out produktId))
+                        var produktidinput = Console.ReadLine(); 
+                        if (int.TryParse(produktidinput, out produktId))
                         {
                             var visaProdukt = (from p in db.Produkter
                                                where p.Id == produktId
@@ -100,11 +106,11 @@ namespace EF_Demo_many2many2.Metoder
                             {
                                 Console.WriteLine($"Namn: {visaProdukt.Namn}  Storlek: {visaProdukt.Storlek}  Pris: {visaProdukt.Pris}  Detaljerad information: {visaProdukt.Info}");
                                 Console.WriteLine("Vill du lägga till i varukorg? Ja/Nej");
-                                var input = Console.ReadLine().ToLower();
+                                var val = Console.ReadLine().ToLower();
                                 Console.WriteLine("Antal?");
                                 var antal = int.Parse(Console.ReadLine());
                                 float summaTotal = antal * visaProdukt.Pris;
-                                switch (input)
+                                switch (val)
                                 {
                                     case "ja":
                                         Kundmetoder.Insert.Varor(kundId, visaProdukt.Id, visaProdukt.Storlek, antal, summaTotal);
@@ -171,7 +177,8 @@ namespace EF_Demo_many2many2.Metoder
                     }
                     Console.WriteLine("Ange produktId: ");
                     int produktId;
-                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out produktId))
+                    var idval = Console.ReadLine();
+                    if (int.TryParse(idval, out produktId))
                     {
                         var visaProdukt = (from p in db.Produkter
                                            where p.Id == produktId
@@ -426,6 +433,7 @@ namespace EF_Demo_many2many2.Metoder
                     Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuListAdmin), i).Replace('_', ' ')}"); // samma sak som ovan och lägg till replcae för att få med mellan slag
                 }
                 int nr;
+
                 MenuListAdmin menu = (MenuListAdmin)99; // Default
                 if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
                 {
