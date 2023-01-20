@@ -13,24 +13,44 @@ namespace EF_Demo_many2many2.Metoder
         {
             public static void NewKund()
             {
-                Console.WriteLine("Namn: ");
-                var namn = Console.ReadLine();
-                Console.WriteLine("Gatunamn: ");
-                var gatuNamn = Console.ReadLine();
-                Console.WriteLine("Stad: ");
-                var stad = Console.ReadLine();
-                Console.WriteLine("Land: ");
-                var land = Console.ReadLine();
-                Console.WriteLine("Personnummer: ");
-                var personNummer = Console.ReadLine();
-                Console.WriteLine("Telefonnummer: ");
-                var telefonNummer = Console.ReadLine();
-                Console.WriteLine("Email: ");
-                var email = Console.ReadLine();
+                
+                    Console.WriteLine("Namn: ");
+                    var namn = Console.ReadLine();
+                    Console.WriteLine("Gatunamn: ");
+                    var gatuNamn = Console.ReadLine();
+                    Console.WriteLine("Stad: ");
+                    var stad = Console.ReadLine();
+                    Console.WriteLine("Land: ");
+                    var land = Console.ReadLine();
+                    Console.WriteLine("Personnummer: ");
+                    var personNummer = Console.ReadLine();
+                    Console.WriteLine("Telefonnummer: ");
+                    var telefonNummer = Console.ReadLine();
+                    Console.WriteLine("Email: ");
+                    while(true)
+                    {
+                        var email = Console.ReadLine();
+                        using (var db = new MyDBContext())
+                        {
+                            var epostadreser = (from TDL in db.Kunder
+                                                where TDL.Email == email
+                                                select TDL).SingleOrDefault();
 
-                KundVärden(namn, gatuNamn, stad, land, personNummer, telefonNummer, email);
-
-            }
+                            if (epostadreser != null)
+                            {
+                            Console.WriteLine("Emailen är redan registrerad, försök igen");
+                            }
+                                
+                            else
+                            {
+                            KundVärden(namn, gatuNamn, stad, land, personNummer, telefonNummer, email);
+                            db.SaveChanges();
+                            break;
+                            }
+                        }
+                    }  
+                }
+            
 
             public static void KundVärden(string namn, string gatuNamn, string stad, string land, string personNummer, string telefonNummer, string email)
             {
