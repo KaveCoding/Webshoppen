@@ -271,30 +271,51 @@ namespace EF_Demo_many2many2.Metoder
                         }
                     }
                 }
-                public static void HämtaBästSäljareProdukt()
+                public static void LagerStatusQuery()
                 {
                     string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
 
-                    var sql = $"SELECT ProduktId, COUNT(ProduktId) AS Antal " +
-                        $"\r\nFROM dbo.Beställningar" +
-                        $"\r\nGroup By ProduktId \r\n" +
-                        $"ORDER BY Antal desc ";
-                    var bästSäljareProdukt = new List<Beställning>();
+                    var sql = $"SELECT * FROM LagerStatusar ORDER BY Saldo desc ";
+                    var lagerProdukter = new List<LagerStatus>();
                     {
 
                         using (var connection = new SqlConnection(connString))
                         {
                             connection.Open();
-                            bästSäljareProdukt = connection.Query<Beställning>(sql).ToList();
+                            lagerProdukter = connection.Query<LagerStatus>(sql).ToList();
                             connection.Close();
                         }
-                        Console.WriteLine("Bästsäljare högst upp");
-                        foreach (var x in bästSäljareProdukt)
+                        Console.WriteLine("Nuvarande lagerstatus:");
+                        foreach (var x in lagerProdukter)
                         {
-                            Console.WriteLine($"ProduktId: {x.ProduktId} Antal: {x.Antal}");
+                            Console.WriteLine($"ProduktId: {x.ProduktId} Saldo: {x.Saldo}");
                         }
                     }
                 }
+                public static void HämtaBästSäljareProdukt()
+                    {
+                        string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
+
+                        var sql = $"SELECT ProduktId, COUNT(ProduktId) AS Antal " +
+                            $"\r\nFROM dbo.Beställningar" +
+                            $"\r\nGroup By ProduktId \r\n" +
+                            $"ORDER BY Antal desc ";
+                        var bästSäljareProdukt = new List<Beställning>();
+                        {
+
+                            using (var connection = new SqlConnection(connString))
+                            {
+                                connection.Open();
+                                bästSäljareProdukt = connection.Query<Beställning>(sql).ToList();
+                                connection.Close();
+                            }
+                            Console.WriteLine("Bästsäljare högst upp");
+                            foreach (var x in bästSäljareProdukt)
+                            {
+                                Console.WriteLine($"ProduktId: {x.ProduktId} Antal: {x.Antal}");
+                            }
+                        }
+                    }
 
             }
         

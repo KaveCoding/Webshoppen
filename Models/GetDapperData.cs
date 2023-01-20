@@ -28,29 +28,7 @@ namespace DemoEFDapper
                 }
 
             }
-        }
-        public static void LagerStatusQuery()
-        {
-            string connString = "Server=tcp:eliasanghnaeh.database.windows.net,1433;Initial Catalog=WebbshoppGrupp8Eskilstuna;Persist Security Info=False;User ID=Group8;Password=Ourpasswordis100%secure;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
-
-            var sql = $"SELECT * FROM LagerStatusar ORDER BY Saldo desc ";
-            var lagerProdukter = new List<LagerStatus>();
-            {
-
-                using (var connection = new SqlConnection(connString))
-                {
-                    connection.Open();
-                    lagerProdukter = connection.Query<LagerStatus>(sql).ToList();
-                    connection.Close();
-                }
-                Console.WriteLine("Nuvarande lagerstatus:");
-                foreach (var x in lagerProdukter)
-                {
-                    Console.WriteLine($"ProduktId: {x.ProduktId} Saldo: {x.Saldo}");
-                }
-            }
-        }
-        
+        }        
     }
 }
 

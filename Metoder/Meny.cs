@@ -453,7 +453,7 @@ namespace EF_Demo_many2many2.Metoder
                         Console.Clear();
                         Adminmetoder.Read.HämtaBästSäljareProdukt();
                         Console.WriteLine("-----------------------------");
-                        GetDapperData.LagerStatusQuery();
+                        Adminmetoder.Read.LagerStatusQuery();
                         Console.WriteLine("-----------------------------");
                         Adminmetoder.Read.HämtaBästSäljareKategori();
                         Console.WriteLine("-----------------------------");
