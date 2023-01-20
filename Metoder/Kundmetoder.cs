@@ -123,7 +123,8 @@ namespace EF_Demo_many2many2.Metoder
                 {
                     Console.WriteLine("Vilken produkt vill du uppdatera? (Ange ProduktID)");
                     int nr;
-                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                    var val = Console.ReadLine();
+                    if (int.TryParse(val, out nr))
                     {
                         var visaVarukorg = (from p in db.Varukorgar
                                             where p.ProduktId == nr
@@ -220,7 +221,8 @@ namespace EF_Demo_many2many2.Metoder
             {
                 Console.Write("Ange Id att ta bort: ");
                 int nr;
-                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                var val = Console.ReadLine();
+                if (int.TryParse(val, out nr))
                 {
                     using (var db = new MyDBContext())
                     {

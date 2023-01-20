@@ -325,7 +325,8 @@ namespace EF_Demo_many2many2.Metoder
             {
                 Console.Write("Ange Id att ta bort: ");
                 int produktDelete;
-                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out produktDelete))
+                var val = Console.ReadLine();
+                if (int.TryParse(val, out produktDelete))
                 {
                     using (var db = new MyDBContext())
                     {
